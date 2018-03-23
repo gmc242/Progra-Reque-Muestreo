@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2011
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Progra-Reque-Muestreo", "Progra-Reque-Muestreo\Progra-Reque-Muestreo.csproj", "{1C5EF4B7-9708-4C15-97C3-86F068902487}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Progra-Reque-Muestreo.Tests", "Progra-Reque-Muestreo.Tests\Progra-Reque-Muestreo.Tests.csproj", "{0455EF83-4942-49A0-A4CB-6E4FA0860DD7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1C5EF4B7-9708-4C15-97C3-86F068902487}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C5EF4B7-9708-4C15-97C3-86F068902487}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C5EF4B7-9708-4C15-97C3-86F068902487}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C5EF4B7-9708-4C15-97C3-86F068902487}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0455EF83-4942-49A0-A4CB-6E4FA0860DD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0455EF83-4942-49A0-A4CB-6E4FA0860DD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0455EF83-4942-49A0-A4CB-6E4FA0860DD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0455EF83-4942-49A0-A4CB-6E4FA0860DD7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C8420CBA-A4E7-465D-B70B-26776505FE91}
+	EndGlobalSection
+EndGlobal
