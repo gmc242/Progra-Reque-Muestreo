@@ -1,0 +1,44 @@
+﻿<h2>Crear Proyecto</h2>
+
+<form action="~/NewProyect/Create" method="post">
+    Nombre del Proyecto por crear:<br>
+    <input type="text" name="nombre" value="Proyecto"><br>
+    Tiempo estimado que durará una observación (En minutos):<br>
+    <input type="text" name="tiempoObservacion"><br><br>
+    <span>
+        Fecha de Inicio del Proyecto:<br>
+        <input type="date" name="inicio">
+    </span>
+    <span>
+        Fecha de Fin del Proyecto:<br>
+        <input type="date" name="final">
+    </span><br>
+    Tamaño de la muestra:
+    <input type="text" name="tamano"><br>
+    Tiempo máximo que puede pasar entre observaciones:
+    <input type="text" name="tiempoEntreObservaciones"><br>
+    <span>
+        Lider del proyecto:
+        <select name="lider">
+            @{ 
+                foreach (String s in ViewData["nombresUsuarios"] as List<String>)
+                {
+                    <option value=@s.Substring(s.IndexOf("Id: ") + 4).AsInt()> @s </option>
+                }
+            } 
+        </select>
+    </span><br>
+    <span>
+        Asistentes para el proyecto:
+        <select multiple name="lider">
+            @{
+                foreach (String s in ViewData["nombresUsuarios"] as List<String>)
+                {
+                    <option value=@s.Substring(s.IndexOf("Id: ") + 4).AsInt()> @s </option>
+                }
+            }
+        </select>
+    </span>
+
+    <input type="submit" value="Crear Proyecto">
+</form>

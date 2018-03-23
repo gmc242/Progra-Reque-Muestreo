@@ -14,15 +14,14 @@ namespace Progra_Reque_Muestreo.Controllers
             return View();
         }
 
-        // GET: NewProyect/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
         // GET: NewProyect/Create
         public ActionResult Create()
         {
+            var ejemplosUsuarios = new List<String>();
+            ejemplosUsuarios.Add("Nombre 1. Id: 1");
+            ejemplosUsuarios.Add("Nombre 1. Id: 2");
+            ejemplosUsuarios.Add("Nombre 1. Id: 3");
+            ViewData["nombresUsuarios"] = ejemplosUsuarios;
             return View();
         }
 
@@ -33,51 +32,8 @@ namespace Progra_Reque_Muestreo.Controllers
             try
             {
                 // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: NewProyect/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: NewProyect/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: NewProyect/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: NewProyect/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
+                // Acá llega el collection con la información colectada en el form
+                // Se itera o revisa de forma collection["nombre"]
                 return RedirectToAction("Index");
             }
             catch
