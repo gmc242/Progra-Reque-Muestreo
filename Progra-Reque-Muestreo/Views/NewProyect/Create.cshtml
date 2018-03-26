@@ -23,22 +23,22 @@
             @{ 
                 foreach (String s in ViewData["nombresUsuarios"] as List<String>)
                 {
-                    <option value=@s.Substring(s.IndexOf("Id: ") + 4).AsInt()> @s </option>
+                    <option value=@s.Substring(s.IndexOf("Id: ") + 4)> @s </option>
                 }
             } 
         </select>
     </span><br>
     <span>
         Asistentes para el proyecto:
-        <select multiple name="lider">
+        <select multiple name="asistentes[]">
             @{
                 foreach (String s in ViewData["nombresUsuarios"] as List<String>)
                 {
-                    <option value=@s.Substring(s.IndexOf("Id: ") + 4).AsInt()> @s </option>
+                    <option value=@s.Substring(s.IndexOf("Id: ") + 4)> @s </option>
                 }
             }
         </select>
     </span>
-
+    <textarea name="descripcion"></textarea>
     <input type="submit" value="Crear Proyecto">
 </form>

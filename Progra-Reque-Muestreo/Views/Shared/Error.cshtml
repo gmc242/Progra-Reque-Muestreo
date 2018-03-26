@@ -7,7 +7,12 @@
 <body>
     <hgroup>
         <h1>Error.</h1>
-        <h2>An error occurred while processing your request.</h2>
+        <h2>Un error ha ocurrido mientras realizaba su consulta.</h2>
     </hgroup>
+    <br />
+    <br />
+    <div>
+        @ViewData["Exception"].ToString();
+    </div>
 </body>
 </html>
