@@ -1,0 +1,14 @@
+﻿<h2>Editar Usuario</h2>
+<br>
+<div>
+    <form action="~/Usuario/Editar" method="post">
+        Nombre del usuario
+        <input type="text" name="nombre" value=@ViewData["nombre"].ToString()><br>
+        Identificador de Usuario (20 caracteres máximo)
+        <input type="text" name="id" value=@ViewData["id"].ToString()><br>
+        Password
+        <input type="password" name="pass"><br>
+        <input type="submit" value="Editar">
+    </form>
+</div>
+

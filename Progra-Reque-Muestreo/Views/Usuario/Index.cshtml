@@ -1,0 +1,18 @@
+﻿<h2>Administración de Usuarios</h2>
+<p>En esta sección manejar los datos asociados a los usuarios registrados dentro del sistema. Note que para editar o borrar usuarios debe primero iniciar sesión como administrador o el usuario que planea modificar.</p>
+<br>
+<div>
+    Haga click sobre un usuario para ver sus detalles y si así lo desea modificarlos.<br><br>
+    <ul>
+        @foreach (String usuario in ViewData["usuarios"] as List<String>) {
+            var idS = usuario.Substring(usuario.IndexOf("Id: ") + 4);
+            <li>
+                <span>
+                    @Html.ActionLink(usuario, "Editar", new { id = idS })
+                    <button>@Html.ActionLink("Eliminar", "Borrar", new { id = idS })</button>
+                </span>
+            </li>
+        }  
+    </ul>
+</div>
+

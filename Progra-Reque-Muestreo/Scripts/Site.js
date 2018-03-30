@@ -35,3 +35,24 @@ function closeSubMod() {
     document.getElementById("subModificar").style.height = "0px";
     document.getElementById("subModificar").style.display = "none";
 }
+
+function subUser() {
+    if ((document.getElementById("subUsuario").style.height == "") ||
+        (document.getElementById("subUsuario").style.height == "0px")) {
+        openSubUser();
+    } else {
+        closeSubUser();
+    }
+}
+
+function openSubUser() {
+    document.getElementById("subUsuario").style.width = "250px";
+    document.getElementById("subUsuario").style.height = "auto";
+    document.getElementById("subUsuario").style.display = "block";
+}
+
+function closeSubUser() {
+    document.getElementById("subUsuario").style.width = "0px";
+    document.getElementById("subUsuario").style.height = "0px";
+    document.getElementById("subUsuario").style.display = "none";
+}

@@ -18,9 +18,8 @@ namespace Progra_Reque_Muestreo.Controllers
         // GET: NewProyect/Create
         public ActionResult Create()
         {
-            var ejemplosUsuarios = new List<String>();
-            ejemplosUsuarios.Add("Usuario Administrador. Id: admin");
-            ViewData["nombresUsuarios"] = ejemplosUsuarios;
+            var usuarios = DatosUsuarios.getUsuariosString();
+            ViewData["usuarios"] = usuarios;
             return View();
         }
 

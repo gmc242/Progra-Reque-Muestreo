@@ -2,7 +2,7 @@
 
 <form action="~/NewProyect/Create" method="post">
     Nombre del Proyecto por crear:<br>
-    <input type="text" name="nombre" value="Proyecto"><br>
+    <input type="text" name="nombre"><br>
     Tiempo estimado que durará una observación (En minutos):<br>
     <input type="text" name="tiempoObservacion"><br><br>
     <span>
@@ -21,24 +21,25 @@
         Lider del proyecto:
         <select name="lider">
             @{ 
-                foreach (String s in ViewData["nombresUsuarios"] as List<String>)
+                foreach (String s in ViewData["usuarios"] as List<String>)
                 {
                     <option value=@s.Substring(s.IndexOf("Id: ") + 4)> @s </option>
                 }
             } 
         </select>
-    </span><br>
+    </span>
     <span>
         Asistentes para el proyecto:
         <select multiple name="asistentes[]">
             @{
-                foreach (String s in ViewData["nombresUsuarios"] as List<String>)
+                foreach (String s in ViewData["usuarios"] as List<String>)
                 {
                     <option value=@s.Substring(s.IndexOf("Id: ") + 4)> @s </option>
                 }
             }
         </select>
-    </span>
+    </span><br>
+    Descripción del Proyecto
     <textarea name="descripcion"></textarea>
     <input type="submit" value="Crear Proyecto">
 </form>
