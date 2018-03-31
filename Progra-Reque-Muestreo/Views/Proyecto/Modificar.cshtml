@@ -1,0 +1,65 @@
+﻿<h2>Modificar</h2>
+
+@{
+    var dic = ViewData["proyecto"] as Dictionary<String, dynamic>;
+
+<form action="~/Proyecto/Modificar" method="post">
+    Nombre del Proyecto por modificar:<br>
+    <input type="text" name="nombre" value=@dic["nombre"]><br>
+    <input type="hidden" name="id" value=@ViewData["id"]>
+    Tiempo estimado que durará una observación (En minutos):<br>
+    <input type="text" name="tiempoObservacion" value=@dic["tiempo_muestreo"]><br><br>
+    <span>
+        Fecha de Inicio del Proyecto:
+        <input type="date" name="inicio" value=@dic["fecha_inicio"].ToString("yyyy-MM-dd")><br>
+        Fecha de Fin del Proyecto:
+        <input type="date" name="final" value=@dic["fecha_fin"].ToString("yyyy-MM-dd")>
+    </span><br>
+    Tamaño de la muestra:
+    Tiempo máximo que puede pasar entre observaciones:<br>
+    <input type="text" name="tamano" value=@dic["tamano_muestreo"]>
+    <input type="text" name="tiempoEntreObservaciones" value=@dic["tiempo_entre_muestreos"]><br>
+    <span>
+        Lider del proyecto:<br>
+        <select name="lider">
+            @{
+                var lider = (String)dic["lider_id"];
+                foreach (String s in ViewData["usuarios"] as List<String>)
+                {
+                    var id = s.Substring(s.IndexOf("Id: ") + 4);
+                    if(lider == id)
+                    {
+                        <option selected="selected" value=@id> @s </option>
+                    }
+                    else
+                    {
+                        <option value=@id> @s </option>
+                    }
+                }
+            }
+        </select>
+    </span><br>
+    <span>
+        Asistentes para el proyecto:<br>
+        <select multiple name="asistentes[]">
+            @{
+                var asistentes = dic["asistentes"] as List<String>;
+                foreach (String s in ViewData["usuarios"] as List<String>)
+                {
+                    var idUsuario = s.Substring(s.IndexOf("Id: ") + 4);
+                    if(asistentes.Contains(idUsuario)){
+                        <option selected="selected" value=@idUsuario> @s </option>
+                    }
+                    else
+                    {
+                        <option value=@idUsuario> @s </option>
+                    }
+                }
+            }
+        </select>
+    </span><br>
+    Descripción del Proyecto<br>
+    <textarea name="descripcion">@dic["descripcion"]</textarea><br>
+    <input type="submit" value="Modificar Proyecto">
+</form>
+}

@@ -75,11 +75,12 @@ namespace Progra_Reque_Muestreo.Controllers
                 var nombre = collection["nombre"].ToString();
                 var pass = collection["pass"].ToString();
                 var idNew = collection["id"].ToString();
+                var idOld = collection["idOld"].ToString();
 
                 if (String.IsNullOrEmpty(nombre) || String.IsNullOrEmpty(id))
                     throw new Exception("Los campos de id y nombre no pueden estar vacíos.");
 
-                DatosUsuarios.editar(id, idNew, nombre, pass);
+                DatosUsuarios.editar(idOld, idNew, nombre, pass);
 
                 return RedirectToAction("Index");
             }

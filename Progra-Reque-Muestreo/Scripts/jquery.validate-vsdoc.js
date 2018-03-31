@@ -56,7 +56,7 @@ $.extend($.fn, {
 			return;
 		}
 
-		// check if a validator for this form was already created
+		// check if a validator for this form was already Created
 		var validator = $.data(this[0], 'validator');
 		if ( validator ) {
 			return validator;
@@ -741,7 +741,7 @@ $.extend($.validator, {
 				// check if we have a generated label, replace the message then
 				label.attr("generated") && label.html(message);
 			} else {
-				// create label
+				// Create label
 				label = $("<" + this.settings.errorElement + "/>")
 					.attr({"for":  this.idOrName(element), generated: true})
 					.addClass(this.settings.errorClass)
@@ -975,7 +975,7 @@ $.extend($.validator, {
 		});
 		
 		if ($.validator.autoCreateRanges) {
-			// auto-create ranges
+			// auto-Create ranges
 			if (rules.min && rules.max) {
 				rules.range = [rules.min, rules.max];
 				delete rules.min;
@@ -1022,7 +1022,7 @@ $.extend($.validator, {
 		/// The actual method implementation, returning true if an element is valid
 		/// </param>
 		/// <param name="message" type="String" optional="true">
-		/// (Optional) The default message to display for this method. Can be a function created by 
+		/// (Optional) The default message to display for this method. Can be a function Created by 
 		/// jQuery.validator.format(value). When undefined, an already existing message is used 
 		/// (handy for localization), otherwise the field-specific messages have to be defined.
 		/// </param>

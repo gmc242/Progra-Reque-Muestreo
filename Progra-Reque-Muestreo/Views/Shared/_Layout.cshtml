@@ -23,15 +23,16 @@
             <a>@Html.ActionLink("Iniciar Sesión", "Login", "Usuario")</a>
             <a>Cerrar Sesión</a>
         </div>
-        <a>@Html.ActionLink("Crear Proyecto", "Index", "NewProyect")</a>
+        <a>@Html.ActionLink("Crear Proyecto", "Crear", "Proyecto")</a>
         <a href="javascript:void(0)" onclick="sub()">Modificar Proyecto</a>
         <div id="subModificar">
-            <a>Modificar Datos Generales</a>
+            <a>@Html.ActionLink("Modificar Datos Generales", "Index", "Proyecto")</a>
             <a>Agregar Actividad</a>
             <a>Agregar Tarea</a>
             <a>Agregar Sujetos de Observación</a>
             <a>Crear Observación de Tarea</a>
             <a>Crear Ronda de Observación</a>
+            <a>Manejar privilegios de Asistentes</a>
         </div>
         <a>@Html.ActionLink("Acerca de", "About", "Home")</a>
         <a>@Html.ActionLink("Ayuda", "Help", "Home")</a>

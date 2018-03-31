@@ -8,7 +8,7 @@ using System.Web;
 
 namespace Progra_Reque_Muestreo.Models
 {
-    public class DatosUsuarios
+    public static class DatosUsuarios
     {
         
         public static Boolean revisarCredenciales(String usuario)
@@ -34,6 +34,8 @@ namespace Progra_Reque_Muestreo.Models
                 command.Parameters.Add(id);
                 command.Prepare();
 
+                Boolean res = false;
+
                 using (var reader = command.ExecuteReader())
                 {
                     while (reader.Read())
@@ -53,18 +55,18 @@ namespace Progra_Reque_Muestreo.Models
                         if (passDB.SequenceEqual(passTempIngresado))
                         {
                             HttpContext.Current.Session["usuario"] = id;
-                            return true;
+                            res = true;
                         }
                         else
-                            return false;
+                            res = false;
                         
                     }
                 }
 
                 conn.Close();
-            }
 
-            return false;
+                return res;
+            }
         }
 
         public static String getNombreUsuario(String id)
@@ -180,14 +182,14 @@ namespace Progra_Reque_Muestreo.Models
 
                     if (!String.IsNullOrEmpty(pass))
                         stmn = new SqlCommand("UPDATE usuario " +
-                            "SET identificador = @id," +
+                            "SET identificador = @id, " +
                             "nombre = @nom, " +
                             "sal = @sal, " +
                             "pass_hash = @pass " +
                             "WHERE identificador = @idActual", conn);
                     else
                         stmn = new SqlCommand("UPDATE usuario " +
-                            "SET identificador = @id," +
+                            "SET identificador = @id, " +
                             "nombre = @nom " +
                             "WHERE identificador = @idActual", conn);
 

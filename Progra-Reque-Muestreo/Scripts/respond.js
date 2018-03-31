@@ -20,8 +20,8 @@ window.matchMedia = window.matchMedia || (function(doc, undefined){
       docElem  = doc.documentElement,
       refNode  = docElem.firstElementChild || docElem.firstChild,
       // fakeBody required for <FF4 when executed in <head>
-      fakeBody = doc.createElement('body'),
-      div      = doc.createElement('div');
+      fakeBody = doc.CreateElement('body'),
+      div      = doc.CreateElement('div');
   
   div.id = 'mq-test-1';
   div.style.cssText = "position:absolute;top:-100em";
@@ -183,14 +183,14 @@ window.matchMedia = window.matchMedia || (function(doc, undefined){
 		// returns the value of 1em in pixels
 		getEmValue		= function() {
 			var ret,
-				div = doc.createElement('div'),
+				div = doc.CreateElement('div'),
 				body = doc.body,
 				fakeUsed = false;
 									
 			div.style.cssText = "position:absolute;font-size:1em;width:1em";
 					
 			if( !body ){
-				body = fakeUsed = doc.createElement( "body" );
+				body = fakeUsed = doc.CreateElement( "body" );
 				body.style.background = "none";
 			}
 					
@@ -268,7 +268,7 @@ window.matchMedia = window.matchMedia || (function(doc, undefined){
 			
 			//inject active styles, grouped by media type
 			for( var i in styleBlocks ){
-				var ss		= doc.createElement( "style" ),
+				var ss		= doc.CreateElement( "style" ),
 					css		= styleBlocks[ i ].join( "\n" );
 				
 				ss.type = "text/css";	
@@ -282,7 +282,7 @@ window.matchMedia = window.matchMedia || (function(doc, undefined){
 		        	ss.styleSheet.cssText = css;
 		        } 
 		        else {
-					ss.appendChild( doc.createTextNode( css ) );
+					ss.appendChild( doc.CreateTextNode( css ) );
 		        }
 		        
 				//push to appendedEls to track for later removal

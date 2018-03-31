@@ -1,0 +1,17 @@
+﻿@{
+    ViewBag.Title = "Proyecto";
+}
+
+<h2>Administración de Proyectos</h2>
+@{ 
+    var lista = ViewData["lista_proyectos"] as List<Tuple<int,String>>;
+    if(lista != null)
+    {
+        <ul>
+            @foreach(Tuple<int,String> proyecto in lista)
+            {
+                <li>@Html.ActionLink(proyecto.Item2, "Modificar", new { id = proyecto.Item1 })</li>
+            }
+        </ul>
+    }
+}

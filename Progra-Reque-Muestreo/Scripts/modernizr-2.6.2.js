@@ -62,13 +62,13 @@ window.Modernizr = (function( window, document, undefined ) {
      * Create our "modernizr" element that we do most feature tests on.
      */
     mod = 'modernizr',
-    modElem = document.createElement(mod),
+    modElem = document.CreateElement(mod),
     mStyle = modElem.style,
 
     /**
      * Create the input element for various Web Forms feature tests.
      */
-    inputElem /*>>inputelem*/ = document.createElement('input') /*>>inputelem*/ ,
+    inputElem /*>>inputelem*/ = document.CreateElement('input') /*>>inputelem*/ ,
 
     /*>>smile*/
     smile = ':)',
@@ -120,17 +120,17 @@ window.Modernizr = (function( window, document, undefined ) {
     injectElementWithStyles = function( rule, callback, nodes, testnames ) {
 
       var style, ret, node, docOverflow,
-          div = document.createElement('div'),
+          div = document.CreateElement('div'),
           // After page load injecting a fake body doesn't work so check if body exists
           body = document.body,
           // IE6 and 7 won't return offsetWidth or offsetHeight unless it's in the body element, so we fake it.
-          fakeBody = body || document.createElement('body');
+          fakeBody = body || document.CreateElement('body');
 
       if ( parseInt(nodes, 10) ) {
-          // In order not to give false positives we create a node for each test
+          // In order not to give false positives we Create a node for each test
           // This also allows the method to scale for unspecified uses
           while ( nodes-- ) {
-              node = document.createElement('div');
+              node = document.CreateElement('div');
               node.id = testnames ? testnames[nodes] : mod + (nodes + 1);
               div.appendChild(node);
           }
@@ -215,7 +215,7 @@ window.Modernizr = (function( window, document, undefined ) {
 
       function isEventSupported( eventName, element ) {
 
-        element = element || document.createElement(TAGNAMES[eventName] || 'div');
+        element = element || document.CreateElement(TAGNAMES[eventName] || 'div');
         eventName = 'on' + eventName;
 
         // When using `setAttribute`, IE skips "unload", WebKit skips "unload" and "resize", whereas `in` "catches" those
@@ -224,13 +224,13 @@ window.Modernizr = (function( window, document, undefined ) {
         if ( !isSupported ) {
           // If it has no `setAttribute` (i.e. doesn't implement Node interface), try generic element
           if ( !element.setAttribute ) {
-            element = document.createElement('div');
+            element = document.CreateElement('div');
           }
           if ( element.setAttribute && element.removeAttribute ) {
             element.setAttribute(eventName, '');
             isSupported = is(element[eventName], 'function');
 
-            // If property was created, "remove it" (by setting value to `undefined`)
+            // If property was Created, "remove it" (by setting value to `undefined`)
             if ( !is(element[eventName], 'undefined') ) {
               element[eventName] = undefined;
             }
@@ -440,12 +440,12 @@ window.Modernizr = (function( window, document, undefined ) {
     // github.com/Modernizr/Modernizr/issues/issue/97/
 
     tests['canvas'] = function() {
-        var elem = document.createElement('canvas');
+        var elem = document.CreateElement('canvas');
         return !!(elem.getContext && elem.getContext('2d'));
     };
 
     tests['canvastext'] = function() {
-        return !!(Modernizr['canvas'] && is(document.createElement('canvas').getContext('2d').fillText, 'function'));
+        return !!(Modernizr['canvas'] && is(document.CreateElement('canvas').getContext('2d').fillText, 'function'));
     };
 
     // webk.it/70117 is tracking a legit WebGL feature detect proposal
@@ -536,7 +536,7 @@ window.Modernizr = (function( window, document, undefined ) {
     };
 
     tests['draganddrop'] = function() {
-        var div = document.createElement('div');
+        var div = document.CreateElement('div');
         return ('draggable' in div) || ('ondragstart' in div && 'ondrop' in div);
     };
 
@@ -608,7 +608,7 @@ window.Modernizr = (function( window, document, undefined ) {
 
     // FF3.0 will false positive on this test
     tests['textshadow'] = function() {
-        return document.createElement('div').style.textShadow === '';
+        return document.CreateElement('div').style.textShadow === '';
     };
 
 
@@ -748,7 +748,7 @@ window.Modernizr = (function( window, document, undefined ) {
     //   It was also live in Safari 4.0.0 - 4.0.4, but fixed in 4.0.5
 
     tests['video'] = function() {
-        var elem = document.createElement('video'),
+        var elem = document.CreateElement('video'),
             bool = false;
 
         // IE9 Running on Windows Server SKU can cause an exception to be thrown, bug #224
@@ -769,7 +769,7 @@ window.Modernizr = (function( window, document, undefined ) {
     };
 
     tests['audio'] = function() {
-        var elem = document.createElement('audio'),
+        var elem = document.CreateElement('audio'),
             bool = false;
 
         try {
@@ -841,20 +841,20 @@ window.Modernizr = (function( window, document, undefined ) {
 
     // Thanks to Erik Dahlstrom
     tests['svg'] = function() {
-        return !!document.createElementNS && !!document.createElementNS(ns.svg, 'svg').createSVGRect;
+        return !!document.CreateElementNS && !!document.CreateElementNS(ns.svg, 'svg').CreateSVGRect;
     };
 
     // specifically for SVG inline in HTML, not within XHTML
     // test page: paulirish.com/demo/inline-svg
     tests['inlinesvg'] = function() {
-      var div = document.createElement('div');
+      var div = document.CreateElement('div');
       div.innerHTML = '<svg/>';
       return (div.firstChild && div.firstChild.namespaceURI) == ns.svg;
     };
 
     // SVG SMIL animation
     tests['smil'] = function() {
-        return !!document.createElementNS && /SVGAnimate/.test(toString.call(document.createElementNS(ns.svg, 'animate')));
+        return !!document.CreateElementNS && /SVGAnimate/.test(toString.call(document.CreateElementNS(ns.svg, 'animate')));
     };
 
     // This test is only for clip paths in SVG proper, not clip paths on HTML content
@@ -863,7 +863,7 @@ window.Modernizr = (function( window, document, undefined ) {
     // However read the comments to dig into applying SVG clippaths to HTML content here:
     //   github.com/Modernizr/Modernizr/issues/213#issuecomment-1149491
     tests['svgclippaths'] = function() {
-        return !!document.createElementNS && /SVGClipPath/.test(toString.call(document.createElementNS(ns.svg, 'clipPath')));
+        return !!document.CreateElementNS && /SVGClipPath/.test(toString.call(document.CreateElementNS(ns.svg, 'clipPath')));
     };
 
     /*>>webforms*/
@@ -872,8 +872,8 @@ window.Modernizr = (function( window, document, undefined ) {
     function webforms() {
         /*>>input*/
         // Run through HTML5's new input attributes to see if the UA understands any.
-        // We're using f which is the <input> element created early on
-        // Mike Taylr has created a comprehensive resource for testing these attributes
+        // We're using f which is the <input> element Created early on
+        // Mike Taylr has Created a comprehensive resource for testing these attributes
         //   when applied to all input types:
         //   miketaylr.com/code/input-type-attr.html
         // spec: www.whatwg.org/specs/web-apps/current-work/multipage/the-input-element.html#input-type-attr-summary
@@ -888,7 +888,7 @@ window.Modernizr = (function( window, document, undefined ) {
             if (attrs.list){
               // safari false positive's on datalist: webk.it/74252
               // see also github.com/Modernizr/Modernizr/issues/146
-              attrs.list = !!(document.createElement('datalist') && window.HTMLDataListElement);
+              attrs.list = !!(document.CreateElement('datalist') && window.HTMLDataListElement);
             }
             return attrs;
         })('autocomplete autofocus list placeholder max min multiple pattern required step'.split(' '));
@@ -1056,19 +1056,19 @@ window.Modernizr = (function( window, document, undefined ) {
 
       (function() {
         try {
-            var a = document.createElement('a');
+            var a = document.CreateElement('a');
             a.innerHTML = '<xyz></xyz>';
             //if the hidden property is implemented we can assume, that the browser supports basic HTML5 Styles
             supportsHtml5Styles = ('hidden' in a);
 
             supportsUnknownElements = a.childNodes.length == 1 || (function() {
               // assign a false positive if unable to shiv
-              (document.createElement)('a');
-              var frag = document.createDocumentFragment();
+              (document.CreateElement)('a');
+              var frag = document.CreateDocumentFragment();
               return (
                 typeof frag.cloneNode == 'undefined' ||
-                typeof frag.createDocumentFragment == 'undefined' ||
-                typeof frag.createElement == 'undefined'
+                typeof frag.CreateDocumentFragment == 'undefined' ||
+                typeof frag.CreateElement == 'undefined'
               );
             }());
         } catch(e) {
@@ -1088,7 +1088,7 @@ window.Modernizr = (function( window, document, undefined ) {
        * @returns {StyleSheet} The style element.
        */
       function addStyleSheet(ownerDocument, cssText) {
-        var p = ownerDocument.createElement('p'),
+        var p = ownerDocument.CreateElement('p'),
             parent = ownerDocument.getElementsByTagName('head')[0] || ownerDocument.documentElement;
 
         p.innerHTML = 'x<style>' + cssText + '</style>';
@@ -1129,12 +1129,12 @@ window.Modernizr = (function( window, document, undefined ) {
        * @param {Document} ownerDocument The context document.
        * @returns {Object} The shived element.
        */
-      function createElement(nodeName, ownerDocument, data){
+      function CreateElement(nodeName, ownerDocument, data){
         if (!ownerDocument) {
             ownerDocument = document;
         }
         if(supportsUnknownElements){
-            return ownerDocument.createElement(nodeName);
+            return ownerDocument.CreateElement(nodeName);
         }
         if (!data) {
             data = getExpandoData(ownerDocument);
@@ -1144,9 +1144,9 @@ window.Modernizr = (function( window, document, undefined ) {
         if (data.cache[nodeName]) {
             node = data.cache[nodeName].cloneNode();
         } else if (saveClones.test(nodeName)) {
-            node = (data.cache[nodeName] = data.createElem(nodeName)).cloneNode();
+            node = (data.cache[nodeName] = data.CreateElem(nodeName)).cloneNode();
         } else {
-            node = data.createElem(nodeName);
+            node = data.CreateElem(nodeName);
         }
 
         // Avoid adding some elements to fragments in IE < 9 because
@@ -1165,12 +1165,12 @@ window.Modernizr = (function( window, document, undefined ) {
        * @param {Document} ownerDocument The context document.
        * @returns {Object} The shived DocumentFragment.
        */
-      function createDocumentFragment(ownerDocument, data){
+      function CreateDocumentFragment(ownerDocument, data){
         if (!ownerDocument) {
             ownerDocument = document;
         }
         if(supportsUnknownElements){
-            return ownerDocument.createDocumentFragment();
+            return ownerDocument.CreateDocumentFragment();
         }
         data = data || getExpandoData(ownerDocument);
         var clone = data.frag.cloneNode(),
@@ -1178,13 +1178,13 @@ window.Modernizr = (function( window, document, undefined ) {
             elems = getElements(),
             l = elems.length;
         for(;i<l;i++){
-            clone.createElement(elems[i]);
+            clone.CreateElement(elems[i]);
         }
         return clone;
       }
 
       /**
-       * Shivs the `createElement` and `createDocumentFragment` methods of the document.
+       * Shivs the `CreateElement` and `CreateDocumentFragment` methods of the document.
        * @private
        * @param {Document|DocumentFragment} ownerDocument The document.
        * @param {Object} data of the document.
@@ -1192,27 +1192,27 @@ window.Modernizr = (function( window, document, undefined ) {
       function shivMethods(ownerDocument, data) {
         if (!data.cache) {
             data.cache = {};
-            data.createElem = ownerDocument.createElement;
-            data.createFrag = ownerDocument.createDocumentFragment;
-            data.frag = data.createFrag();
+            data.CreateElem = ownerDocument.CreateElement;
+            data.CreateFrag = ownerDocument.CreateDocumentFragment;
+            data.frag = data.CreateFrag();
         }
 
 
-        ownerDocument.createElement = function(nodeName) {
+        ownerDocument.CreateElement = function(nodeName) {
           //abort shiv
           if (!html5.shivMethods) {
-              return data.createElem(nodeName);
+              return data.CreateElem(nodeName);
           }
-          return createElement(nodeName, ownerDocument, data);
+          return CreateElement(nodeName, ownerDocument, data);
         };
 
-        ownerDocument.createDocumentFragment = Function('h,f', 'return function(){' +
-          'var n=f.cloneNode(),c=n.createElement;' +
+        ownerDocument.CreateDocumentFragment = Function('h,f', 'return function(){' +
+          'var n=f.cloneNode(),c=n.CreateElement;' +
           'h.shivMethods&&(' +
-            // unroll the `createElement` calls
+            // unroll the `CreateElement` calls
             getElements().join().replace(/\w+/g, function(nodeName) {
-              data.createElem(nodeName);
-              data.frag.createElement(nodeName);
+              data.CreateElem(nodeName);
+              data.frag.CreateElement(nodeName);
               return 'c("' + nodeName + '")';
             }) +
           ');return n}'
@@ -1282,7 +1282,7 @@ window.Modernizr = (function( window, document, undefined ) {
         'supportsUnknownElements': supportsUnknownElements,
 
         /**
-         * A flag to indicate that the document's `createElement` and `createDocumentFragment`
+         * A flag to indicate that the document's `CreateElement` and `CreateDocumentFragment`
          * methods should be overwritten.
          * @memberOf html5
          * @type Boolean
@@ -1299,11 +1299,11 @@ window.Modernizr = (function( window, document, undefined ) {
         // shivs the document according to the specified `html5` object options
         'shivDocument': shivDocument,
 
-        //creates a shived element
-        createElement: createElement,
+        //Creates a shived element
+        CreateElement: CreateElement,
 
-        //creates a shived documentFragment
-        createDocumentFragment: createDocumentFragment
+        //Creates a shived documentFragment
+        CreateDocumentFragment: CreateDocumentFragment
       };
 
       /*--------------------------------------------------------------------------*/

@@ -37,7 +37,7 @@ $.extend($.fn, {
 			return;
 		}
 
-		// check if a validator for this form was already created
+		// check if a validator for this form was already Created
 		var validator = $.data( this[0], "validator" );
 		if ( validator ) {
 			return validator;
@@ -697,7 +697,7 @@ $.extend($.validator, {
 				// replace message on existing label
 				label.html(message);
 			} else {
-				// create label
+				// Create label
 				label = $("<" + this.settings.errorElement + ">")
 					.attr("for", this.idOrName(element))
 					.addClass(this.settings.errorClass)
@@ -967,7 +967,7 @@ $.extend($.validator, {
 		});
 
 		if ( $.validator.autoCreateRanges ) {
-			// auto-create ranges
+			// auto-Create ranges
 			if ( rules.min && rules.max ) {
 				rules.range = [rules.min, rules.max];
 				delete rules.min;
