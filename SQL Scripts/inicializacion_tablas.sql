@@ -7,7 +7,7 @@ CREATE TABLE usuario(
 	identificador varchar(20),
 	nombre varchar(40) NOT NULL,
 	sal binary(32) NOT NULL,
-	pass_hash binary(256) NOT NULL,
+	pass_hash binary(32) NOT NULL,
 	primary key(identificador)
 );
 
