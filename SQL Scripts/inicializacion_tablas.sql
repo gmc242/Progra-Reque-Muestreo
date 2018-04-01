@@ -91,3 +91,10 @@ CREATE TABLE asistentes_por_actividad(
 	foreign key(id_actividad) references actividad
 );
 
+CREATE TABLE usuarios_por_actividad(
+	id_actividad int NOT NULL,
+	id_usuario varchar(20) NOT NULL,
+	foreign key(id_actividad) references actividad,
+	foreign key(id_usuario) references usuario
+);
+
