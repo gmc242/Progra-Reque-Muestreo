@@ -1,0 +1,43 @@
+﻿<h2>Modificar Actividad</h2>
+<span>Ingrese los datos que desea modificar.</span><br><br>
+<div>
+    @{
+        var dic = ViewData["actividad"] as Dictionary<String, dynamic>;
+
+        using (Html.BeginForm(new { idActividad = dic["id_actividad"].ToString() }))
+        {
+
+            <div>
+                <input type="hidden" name="idProyecto" value=@dic["id_proyecto"]>
+                Nombre de la actividad:
+                <input type="text" name="nombre" value=@dic["nombre"]><br>
+                Descripción de la actividad:
+                <textarea name="descripcion">@dic["descripcion"]</textarea><br>
+                @{
+                    var listaUsuariosTotal = ViewData["usuarios"] as List<Tuple<String, String>>;
+                    var listaUsuariosAct = dic["usuarios"];
+                    <span>Seleccione los usuarios que tendrán permiso de hacer observaciones de esta actividad.</span><br>
+                    <select multiple name="usuarios[]">
+                        @foreach (Tuple<String, String> usuario in listaUsuariosTotal)
+                        {
+                            var encontrado = false;
+                            foreach (Tuple<String, String> usuarioParaActividad in listaUsuariosAct)
+                            {
+                                if(usuario.Item1 == usuarioParaActividad.Item1)
+                                {
+                                    encontrado = true;
+                                    <option selected="selected" value=@usuario.Item1>@usuario.Item2</option>
+                                }
+                            }
+                            if (!encontrado)
+                            {
+                                <option value=@usuario.Item1>@usuario.Item2</option>
+                            }
+                        }
+                    </select><br><br>
+                }
+                <input type="submit" value="Modificar">
+            </div>
+        }
+    }
+</div>

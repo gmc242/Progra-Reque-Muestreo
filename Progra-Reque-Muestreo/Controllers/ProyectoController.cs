@@ -147,6 +147,85 @@ namespace Progra_Reque_Muestreo.Controllers
             }
         }
 
-        
+        // GET Proyecto/Actividad
+        public ActionResult Actividad()
+        {
+            try
+            {
+                return View();
+            }catch(Exception e)
+            {
+                return View("Error");
+            }
+        }
+
+        // GET Proyecto/Actividad/Crear
+        public ActionResult CrearActividad()
+        {
+            try
+            {
+                return View();
+            }
+            catch (Exception e)
+            {
+                return View("Error");
+            }
+        }
+
+        // POST Proyecto/Actividad/Crear
+        [HttpPost]
+        public ActionResult CrearActividad(FormCollection form)
+        {
+            try
+            {
+                return View();
+            }
+            catch (Exception e)
+            {
+                return View("Error");
+            }
+        }
+
+        // GET Proyecto/Actividad/Modificar/Id
+        public ActionResult ModificarActividad(int id)
+        {
+            try
+            {
+                return View();
+            }
+            catch (Exception e)
+            {
+                return View("Error");
+            }
+        }
+
+        // POST Proyecto/Actividad/Modificar/Id
+        [HttpPost]
+        public ActionResult ModificarActividad(int id, FormCollection form)
+        {
+            try
+            {
+                return View();
+            }
+            catch (Exception e)
+            {
+                return View("Error");
+            }
+        }
+
+        // GET: Proyecto/Tarea
+        public ActionResult Tarea()
+        {
+            try
+            {
+                return View();
+            }
+            catch (Exception e)
+            {
+                return View("Error");
+            }
+        }
+
+
     }
 }

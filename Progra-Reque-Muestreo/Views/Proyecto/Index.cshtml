@@ -10,7 +10,15 @@
         <ul>
             @foreach(Tuple<int,String> proyecto in lista)
             {
-                <li>@Html.ActionLink(proyecto.Item2, "Modificar", new { id = proyecto.Item1 })</li>
+                <li>@Html.ActionLink(proyecto.Item2, "Modificar", new { id = proyecto.Item1 })</li><br>
+                <ul class="lista_actividades">
+                    <li class="li_actividad">@Html.ActionLink("Actividades", "Index", "Actividad", new { idProyecto = proyecto.Item1 }, null)</li>
+                    <li class="li_actividad">Tareas</li>
+                    <li class="li_actividad">Sujetos de Observación</li>
+                    <li class="li_actividad">Rondas</li>
+                    <li class="li_actividad">Observaciones</li>
+                    <li class="li_actividad">Restricciones de acceso a usuarios</li>
+                </ul>
             }
         </ul>
     }

@@ -13,6 +13,10 @@ namespace Progra_Reque_Muestreo
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            //enable attribute routing
+            routes.MapMvcAttributeRoutes();
+            AreaRegistration.RegisterAllAreas();
+
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",

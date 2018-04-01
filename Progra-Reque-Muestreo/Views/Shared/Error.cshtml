@@ -11,8 +11,9 @@
     </hgroup>
     <br />
     <br />
-    <div>
-        @ViewData["Exception"].ToString();
-    </div>
+    @{
+        var e = (Exception)ViewData["exception"];
+        <div>@e.Message</div>
+    }
 </body>
 </html>

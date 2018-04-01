@@ -1,0 +1,24 @@
+﻿<h2>Crear Actividad</h2>
+<span>Ingrese los datos necesarios para crear una actividad nueva.</span><br><br>
+<div>
+    @using (Html.BeginForm(new { idProyecto = ViewData["idProyecto"].ToString()}))
+    {
+    <div>
+        Nombre de la actividad:  
+        <input type="text" name="nombre"><br>
+        Descripción de la actividad:   
+        <textarea name="descripcion"></textarea><br>
+        @{ 
+            var listaUsuarios = ViewData["usuarios"] as List<Tuple<String, String>>;
+            <span>Seleccione los usuarios que tendrán permisos de realizar observaciones sobre esta actividad</span>
+            <select multiple name="usuarios[]">
+                @foreach(Tuple<String, String> usuario in listaUsuarios)
+                {
+                    <option value=@usuario.Item1>@usuario.Item2</option>
+                }
+            </select><br>
+        }
+        <input type="submit" value="Crear">
+    </div>
+    }
+</div>

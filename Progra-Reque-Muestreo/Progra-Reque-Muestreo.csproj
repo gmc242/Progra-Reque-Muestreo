@@ -142,6 +142,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\ActividadController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProyectoController.cs" />
     <Compile Include="Controllers\UsuarioController.cs" />
@@ -149,6 +150,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\ControladorGlobal.cs" />
+    <Compile Include="Models\DatosActividad.cs" />
     <Compile Include="Models\DatosProyecto.cs" />
     <Compile Include="Models\DatosUsuarios.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -198,9 +200,17 @@
     <Content Include="Views\Usuario\Login.cshtml" />
     <Content Include="Views\Usuario\Editar.cshtml" />
     <Content Include="Views\Proyecto\Modificar.cshtml" />
+    <Content Include="Views\Actividad\Index.cshtml" />
+    <Content Include="Views\Actividad\Crear.cshtml" />
+    <Content Include="Views\Actividad\Modificar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Observacion\" />
+    <Folder Include="Views\Privilegios\" />
+    <Folder Include="Views\Ronda\" />
+    <Folder Include="Views\Sujetos\" />
+    <Folder Include="Views\Tarea\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
