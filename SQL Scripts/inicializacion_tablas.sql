@@ -60,28 +60,39 @@ CREATE TABLE tarea(
 	foreign key (id_actividad) references actividad
 );
 
-CREATE TABLE observacion_de_tarea(
+CREATE TABLE observacion(
 	id_observacion integer identity(1,1),
-	id_sujeto integer,
 	id_actividad integer NOT NULL,
+	dia date NOT NULL,
+	descripcion Varchar(200),
+	primary key(id_observacion),
+	foreign key(id_actividad) references actividad
+);
+
+CREATE TABLE observacion_de_tarea(
+	id_observacion_tarea integer identity(1,1),
+	id_observacion integer NOT NULL,
+	id_sujeto integer,
+	id_tarea integer NOT NULL,
 	fecha_hora datetime NOT NULL,
 	categoria varchar(2) NOT NULL,
-	observacion varchar(200),
-	primary key(id_observacion),
+	comentario varchar(200),
+	primary key(id_observacion_tarea),
 	foreign key(id_sujeto) references sujetos_de_prueba,
-	foreign key(id_actividad) references actividad,
+	foreign key(id_tarea) references tarea,
+	foreign key(id_observacion) references observacion,
 	constraint cate check (categoria IN ('TP','TC','TI'))
 );
 
 CREATE TABLE ronda_de_observacion(
 	id_ronda integer identity(1,1),
-	id_actividad integer NOT NULL,
+	id_observacion integer NOT NULL,
 	fecha_hora datetime NOT NULL,
-	humedad integer NOT NULL,
-	temperatura integer NOT NULL,
+	humedad float NOT NULL,
+	temperatura float NOT NULL,
 	descripcion varchar(200),
 	primary key(id_ronda),
-	foreign key(id_actividad) references actividad
+	foreign key(id_observacion) references observacion
 );
 
 CREATE TABLE asistentes_por_actividad(
@@ -97,4 +108,6 @@ CREATE TABLE usuarios_por_actividad(
 	foreign key(id_actividad) references actividad,
 	foreign key(id_usuario) references usuario
 );
+
+
 
