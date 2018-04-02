@@ -1,0 +1,36 @@
+﻿@{
+    var proyecto = ViewData["proyecto"] as Tuple<int, String>;
+    var observaciones = ViewData["observaciones"] as List<Tuple<int, String>>;
+
+    <h2>Control de Observaciones</h2><br />
+    <p>En esta sección podrá crear, modificar y eliminar observaciones del proyecto @proyecto.Item2</p><br />
+
+    if(observaciones.Count > 0)
+    {
+        <p>A continuación puede manejar las observaciones registradas hasta el momento</p>
+        <ul>
+            @{ 
+                foreach(Tuple<int, String> observacion in observaciones)
+                {
+                    var onClickS = "mostrarAccionesObs('" + observacion.Item1 + "')";
+                    var liId = "lista" + observacion.Item1;
+                    <li>
+                        @Html.ActionLink(observacion.Item2, "Modificar", "Observacion",
+                         new { idObservacion = observacion.Item1, idProyecto = proyecto.Item1 }, null)
+                        <button class="closebtn">
+                            @Html.ActionLink("", "Eliminar", "Observacion",
+                            new { idObservacion = observacion.Item1, idProyecto = proyecto.Item1 }, null)
+                        </button>
+                    </li>
+                }
+            }
+        </ul>
+    }
+    else
+    {
+        <p>No hay observaciones registradas hasta el momento</p><br />
+    }
+
+    <p>Para crear una observación nueva, haga click sobre el botón:</p><br />
+    <button>@Html.ActionLink("Crear Observación", "Crear", "Observacion", new { idProyecto = proyecto.Item1 }, null)</button>
+}

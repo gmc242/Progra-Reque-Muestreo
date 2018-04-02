@@ -1,11 +1,11 @@
-﻿<h2>Administración de Actividad</h2>
-<p>En esta sección podrá manejar los datos asociados a los usuarios registrados dentro del sistema. </p>
+﻿<h2>Administración de Actividades</h2><br>
+<p>En esta sección va a poder manejar los datos asociados a las actividades del Proyecto. </p>
 <br><br>
 <div>
     @{
         var nombreProy = ViewData["nombre"].ToString();
         var idProyS = ViewData["id"].ToString();
-        <span>El proyecto de nombre @nombreProy y de ID:_@idProyS tiene las siguientes actividades registradas:</span><br><br>
+        <span>El proyecto de nombre @nombreProy y de ID: @idProyS tiene las siguientes actividades registradas:</span><br><br>
         var actividades = ViewData["actividades"] as List<Tuple<int, String>>;
         if (actividades.Count > 0)
         {
@@ -15,14 +15,21 @@
                 @foreach (Tuple<int, String> tuple in actividades)
                 {
                     var idS = tuple.Item1.ToString();
+                    var onClickS = "mostrarAcciones('" + tuple.Item1 + "')";
+                    var listaIdS = "SubActividades" + tuple.Item1;
                     <li>
                         <span>
-                            @Html.ActionLink(tuple.Item2, "Modificar", "Actividad", routeValues:new { idProyecto = idProyS, idActividad = idS }, htmlAttributes: null)
-                            <button>@Html.ActionLink("Eliminar", "Eliminar", "Actividad", routeValues:new { idProyecto = idProyS, idActividad = idS }, htmlAttributes: null)</button>
-                        </span>
+                            @Html.ActionLink(tuple.Item2, "Modificar", "Actividad", routeValues: new { idProyecto = idProyS, idActividad = idS }, htmlAttributes: null)
+                            <button class="eliminar">@Html.ActionLink("Eliminar", "Eliminar", "Actividad", routeValues: new { idProyecto = idProyS, idActividad = idS }, htmlAttributes: null)</button>
+                            <button class="mostrarTareas" onclick=@onClickS>Mostrar Acciones</button>
+                        </span><br>
+                        <ul class="SubActividades" id=@listaIdS>
+                            <li class="LiSubActividades">@Html.ActionLink("Administración de Tareas", "Index", "Tarea", routeValues: new { idActividad = tuple.Item1 }, htmlAttributes: null)</li>
+                            <li class="LiSubActividades">@Html.ActionLink("Administración de Observaciones", "Index", "Observacion", routeValues: new { idActividad = tuple.Item1 }, htmlAttributes: null)</li>
+                        </ul><br>
                     </li>
                 }
-            </ul>
+            </ul><br>
         </div>
         }
         else

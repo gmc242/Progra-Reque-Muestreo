@@ -144,14 +144,21 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\ActividadController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ObservacionController.cs" />
     <Compile Include="Controllers\ProyectoController.cs" />
+    <Compile Include="Controllers\RondaController.cs" />
+    <Compile Include="Controllers\SujetoController.cs" />
+    <Compile Include="Controllers\TareaController.cs" />
     <Compile Include="Controllers\UsuarioController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\ControladorGlobal.cs" />
     <Compile Include="Models\DatosActividad.cs" />
+    <Compile Include="Models\DatosObservacion.cs" />
     <Compile Include="Models\DatosProyecto.cs" />
+    <Compile Include="Models\DatosSujeto.cs" />
+    <Compile Include="Models\DatosTarea.cs" />
     <Compile Include="Models\DatosUsuarios.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -203,14 +210,17 @@
     <Content Include="Views\Actividad\Index.cshtml" />
     <Content Include="Views\Actividad\Crear.cshtml" />
     <Content Include="Views\Actividad\Modificar.cshtml" />
+    <Content Include="Views\Tarea\Index.cshtml" />
+    <Content Include="Views\Tarea\Crear.cshtml" />
+    <Content Include="Views\Tarea\Modificar.cshtml" />
+    <Content Include="Views\Sujeto\Index.cshtml" />
+    <Content Include="Views\Observacion\Index.cshtml" />
+    <Content Include="Views\Observacion\Crear.cshtml" />
+    <Content Include="Views\Observacion\Modificar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Observacion\" />
-    <Folder Include="Views\Privilegios\" />
     <Folder Include="Views\Ronda\" />
-    <Folder Include="Views\Sujetos\" />
-    <Folder Include="Views\Tarea\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

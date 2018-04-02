@@ -1,0 +1,14 @@
+﻿@{
+    var tarea = ViewData["tarea"] as Dictionary<String, dynamic>;
+    <h2>Modificar Tarea</h2>
+    using (Html.BeginForm(new { idTarea = tarea["id_tarea"] }))
+    {
+        <span>Nombre:   </span>
+        <input type="text" name="nombre" value=@tarea["nombre"]><br>
+        <span>Descripcion:</span><br>
+        <textarea name="descripcion">@tarea["descripcion"]</textarea><br>
+        <input type="hidden" name="id_actividad" value=@tarea["id_actividad"].ToString()>
+        <input type="hidden" name="id_tarea" value=@tarea["id_tarea"].ToString()>
+        <input type="submit" value="Modificar Tarea">
+    }
+}

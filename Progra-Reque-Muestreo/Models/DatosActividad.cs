@@ -236,6 +236,50 @@ namespace Progra_Reque_Muestreo.Models
 
         public static void ModificarUsuariosActividad(int idActividad, String[] usuarios)
         {
+            EliminarUsuariosActividad(idActividad);
+
+            AgregarUsuariosActividad(idActividad, usuarios);
+        }
+
+        public static void EliminarDeProyecto(int idProyecto)
+        {
+            var actividades = getActividades(idProyecto);
+            foreach(Tuple<int,String> actividad in actividades)
+            {
+                EliminarActividad(actividad.Item1);
+            }
+        }
+
+        public static void EliminarActividad(int idActividad)
+        {
+            //Primero elimina las tuplas relacionadas con la actividad
+
+            //DatosTarea.EliminarDeActividad(idActividad);
+            //DatosObservacion.EliminarDeActividad(idActividad);
+            //DatosRonda.EliminarDeActividad(idActividad);
+            EliminarUsuariosActividad(idActividad);
+
+            using (var conn = ControladorGlobal.GetConn())
+            {
+                conn.Open();
+
+                var command = new SqlCommand(
+                    "DELETE FROM actividad WHERE id_actividad = @id", conn);
+
+                var idP = new SqlParameter("@id", SqlDbType.Int, 0);
+                idP.Value = idActividad;
+
+                command.Parameters.Add(idP);
+                command.Prepare();
+
+                command.ExecuteNonQuery();
+
+                conn.Close();
+            }
+        }
+
+        public static void EliminarUsuariosActividad(int idActividad)
+        {
             using (var conn = ControladorGlobal.GetConn())
             {
                 conn.Open();
@@ -252,8 +296,6 @@ namespace Progra_Reque_Muestreo.Models
 
                 conn.Close();
             }
-
-            AgregarUsuariosActividad(idActividad, usuarios);
         }
 
     }

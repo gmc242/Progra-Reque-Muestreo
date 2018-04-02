@@ -1,0 +1,33 @@
+﻿
+@{
+    var actividad = ViewData["actividad"] as Tuple<int,String>;
+    var idActividad = actividad.Item1;
+    var nomActividad = actividad.Item2;
+    <h2>Manejo de Tareas</h2><br>
+    <p>En esta sección podra manejar los datos relacionados con la creación y modificación de Tareas para la actividad @nomActividad ID: @idActividad </p>
+    <br>
+    var tareas = ViewData["tareas"] as List<Tuple<int, String>>;
+    if (tareas.Count > 0)
+    {
+        <p>Estas son las tareas registradas para la actividad</p>
+        <ul>
+            @{ 
+                foreach(Tuple<int,String> tarea in tareas)
+                {
+                    <li>
+                        <span>
+                            @Html.ActionLink(tarea.Item2, "Modificar", "Tarea", routeValues: new { idTarea = tarea.Item1 }, htmlAttributes: null)                    
+                            <button class="Eliminar">@Html.ActionLink("Eliminar", "Eliminar", "Tarea", new { idTarea = tarea.Item1, idActividad }, null)</button>
+                        </span>
+                    </li>
+                }
+            }
+        </ul>
+    }
+    else
+    {
+        <p>No hay tareas registradas para la actividad</p>
+    }
+    <p>Si desea crear una nueva tarea para esta actividad haga click en el botón.</p>
+    <button>@Html.ActionLink("Crear una Tarea", "Crear", "Tarea", routeValues: new { idActividad }, htmlAttributes: null)</button>
+}

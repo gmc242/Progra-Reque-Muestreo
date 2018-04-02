@@ -8,33 +8,12 @@ function openNav() {
 
 /* Set the width of the side navigation to 0 and the left margin of the page content to 0 */
 function closeNav() {
+    closeSubUser();
     document.getElementById("mySidenav").style.width = "0px";
     document.getElementById("mySidenav").style.height = "0px";
     document.getElementById("mySidenav").style.display = "none";
-    closeSubMod()
     document.getElementById("main").style.marginLeft = "0px";
 } 
-
-function sub() {
-    if ((document.getElementById("subModificar").style.height == "") ||
-        (document.getElementById("subModificar").style.height == "0px")){
-        openSubMod();
-    } else {
-        closeSubMod();
-    }
-}
-
-function openSubMod() {
-    document.getElementById("subModificar").style.width = "250px";
-    document.getElementById("subModificar").style.height = "auto";
-    document.getElementById("subModificar").style.display = "block";
-}
-
-function closeSubMod() {
-    document.getElementById("subModificar").style.width = "0px";
-    document.getElementById("subModificar").style.height = "0px";
-    document.getElementById("subModificar").style.display = "none";
-}
 
 function subUser() {
     if ((document.getElementById("subUsuario").style.height == "") ||
@@ -55,4 +34,31 @@ function closeSubUser() {
     document.getElementById("subUsuario").style.width = "0px";
     document.getElementById("subUsuario").style.height = "0px";
     document.getElementById("subUsuario").style.display = "none";
+}
+
+function mostrarAcciones(id) {
+    if ((document.getElementById("SubActividades" + id).style.display == "") ||
+        (document.getElementById("SubActividades" + id).style.display == "none")) {
+        document.getElementById("SubActividades" + id).style.display = "block"
+    } else {
+        document.getElementById("SubActividades" + id).style.display = "none"
+    }
+}
+
+function mostrarModificarSujeto(id) {
+    if ((document.getElementById("formModificarSujeto" + id).style.display == "") ||
+        (document.getElementById("formModificarSujeto" + id).style.display == "none")) {
+        document.getElementById("formModificarSujeto" + id).style.display = "block"
+    } else {
+        document.getElementById("formModificarSujeto" + id).style.display = "none"
+    }
+}
+
+function mostrarCrearSujeto() {
+    if ((document.getElementById("formCrearSujeto").style.display == "") ||
+        (document.getElementById("formCrearSujeto").style.display == "none")) {
+        document.getElementById("formCrearSujeto").style.display = "block"
+    } else {
+        document.getElementById("formCrearSujeto").style.display = "none"
+    }
 }

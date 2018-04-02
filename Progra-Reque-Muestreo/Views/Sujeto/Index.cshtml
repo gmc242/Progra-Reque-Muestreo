@@ -1,0 +1,48 @@
+﻿@{
+    var proyecto = ViewData["proyecto"] as Tuple<int, String>;
+    var sujetos = ViewData["sujetos"] as List<Tuple<int, String>>;
+
+    <h2>Manejo de Sujetos para la Observación</h2><br />
+    <p>En esta sección podrá crear, modificar y eliminar sujetos de observación para el proyecto @proyecto.Item2.</p><br />
+
+    if (sujetos.Count > 0)
+    {
+        <p>Lista de Sujetos asociados al proyecto: </p>
+        <ul>
+            @foreach (Tuple<int, String> sujeto in sujetos)
+            {
+                var onClickS = "mostrarModificarSujeto('" + sujeto.Item1.ToString() + "')";
+                var formId = "formModificarSujeto" + sujeto.Item1.ToString();
+                <li>
+                    @sujeto.Item2
+                    <button onclick=@onClickS>Modificar</button>
+                    <button>@Html.ActionLink("Eliminar", "Eliminar", "Sujeto", new { idProyecto = proyecto.Item1, idSujeto = sujeto.Item1 }, null)</button>
+                </li>
+                <br>
+                using (Html.BeginForm("Modificar", "Sujeto", new { idSujeto = sujeto.Item1 }, FormMethod.Post, new { id = formId, Class = "FormModificar" }))
+                {
+                    <span>Nombre: </span>
+                    <input type="text" name="nombre" value=@sujeto.Item2>
+                    <input type="hidden" name="id_sujeto" value=@sujeto.Item1>
+                    <input type="hidden" name="id_proyecto" value=@proyecto.Item1>
+                    <input type="submit" value="Modificar">
+                    <br>
+                }
+            }
+        </ul><br>
+    }
+    else
+    {
+        <p>No hay sujetos registrados para este proyecto.</p><br>
+    }
+    <p>Para crear un sujeto haga click sobre el boton siguiente: </p> <br>
+    <button onclick="mostrarCrearSujeto()">Crear Sujeto</button>
+    using (Html.BeginForm("Crear", "Sujeto", new { idProyecto = proyecto.Item1 }, FormMethod.Post, new { id = "formCrearSujeto", Class = "FormCrear" }))
+    {
+        <span>Nombre: </span>
+        <input type="text" name="nombre">
+        <input type="hidden" name="id_proyecto" value=@proyecto.Item1>
+        <input type="submit" value="Crear">
+        <br>
+    }
+}

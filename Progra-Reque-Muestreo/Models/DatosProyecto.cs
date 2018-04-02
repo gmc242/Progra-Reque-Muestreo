@@ -142,6 +142,7 @@ namespace Progra_Reque_Muestreo.Models
                         dic["fecha_fin"] = (DateTime)reader["fecha_fin"];
                         dic["lider_id"] = reader["lider_id"].ToString();
                         dic["descripcion"] = reader["descripcion"].ToString();
+                        dic["id_proyecto"] = id;
                         
                     }
                 }

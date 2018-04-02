@@ -117,6 +117,18 @@ textarea {
     padding: 16px;
 }
 
+.SubActividades{
+    display: none;
+}
+
+.FormModificar{
+    display: none;
+}
+
+.FormCrear{
+    display: none;
+}
+
 @media screen and (max-height: 450px) {
     #mySidenav {
         padding-top: 15px;

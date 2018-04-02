@@ -99,28 +99,22 @@ namespace Progra_Reque_Muestreo.Controllers
             }
         }
 
-        // GET: Actividad/Delete/5
+        // GET: Actividad/Eliminar/5
         [Route("Eliminar")]
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Actividad/Delete/5
-        [Route("Eliminar"), HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult Eliminar(int idActividad, int idProyecto)
         {
             try
             {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
+                DatosActividad.EliminarActividad(idActividad);
+                return RedirectToAction("Index", new { idProyecto = idProyecto.ToString() });
             }
             catch (Exception e)
             {
-                ViewData["exception"] = e;
+                ViewData["exception"] = new Exception(
+                    "No se ha podido borrar la actividad. Revise las posibles dependencias de esta actividad y borrelas primero.");
                 return View("Error");
             }
         }
+
     }
 }

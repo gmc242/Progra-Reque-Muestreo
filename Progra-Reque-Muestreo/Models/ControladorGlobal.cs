@@ -45,6 +45,11 @@ namespace Progra_Reque_Muestreo.Models
             }
         }
 
+        public static String GetDateFormat()
+        {
+            return "yyyy-MM-dd";
+        }
+
         public static void InicializarUsuarios()
         {
             DatosUsuarios.agregarUsuario("admin", "Usuario Administrador", "admin");
