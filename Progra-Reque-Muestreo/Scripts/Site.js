@@ -62,3 +62,12 @@ function mostrarCrearSujeto() {
         document.getElementById("formCrearSujeto").style.display = "none"
     }
 }
+
+function mostrarAccionesObs(id) {
+    if ((document.getElementById("Lista" + id).style.display == "") ||
+        (document.getElementById("Lista" + id).style.display == "none")) {
+        document.getElementById("Lista" + id).style.display = "block"
+    } else {
+        document.getElementById("Lista" + id).style.display = "none"
+    }
+}

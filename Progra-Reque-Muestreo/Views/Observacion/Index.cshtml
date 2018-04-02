@@ -13,14 +13,19 @@
                 foreach(Tuple<int, String> observacion in observaciones)
                 {
                     var onClickS = "mostrarAccionesObs('" + observacion.Item1 + "')";
-                    var liId = "lista" + observacion.Item1;
+                    var liId = "Lista" + observacion.Item1;
                     <li>
                         @Html.ActionLink(observacion.Item2, "Modificar", "Observacion",
                          new { idObservacion = observacion.Item1, idProyecto = proyecto.Item1 }, null)
                         <button class="closebtn">
-                            @Html.ActionLink("", "Eliminar", "Observacion",
+                            @Html.ActionLink("Eliminar", "Eliminar", "Observacion",
                             new { idObservacion = observacion.Item1, idProyecto = proyecto.Item1 }, null)
                         </button>
+                        <button onclick=@onClickS>Acciones Disponibles</button>
+                        <ul id=@liId  class="ListaAcciones">
+                            <li>Manejo de Rondas de Observación</li>
+                            <li>Manejo de Observaciones de Tareas</li>
+                        </ul>
                     </li>
                 }
             }

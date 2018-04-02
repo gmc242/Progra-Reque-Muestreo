@@ -18,7 +18,7 @@ namespace Progra_Reque_Muestreo.Models
                 conn.Open();
 
                 var command = new SqlCommand(
-                    "SELECT a.nombre, o.fecha, o.id_observacion FROM observacion AS o " +
+                    "SELECT a.nombre, o.dia, o.id_observacion FROM observacion AS o " +
                     "INNER JOIN actividad AS a ON a.id_actividad = o.id_actividad WHERE a.id_proyecto = @id", conn);
 
                 var idP = new SqlParameter("@id", SqlDbType.Int, 0) { Value = idProyecto };
@@ -52,11 +52,11 @@ namespace Progra_Reque_Muestreo.Models
                 conn.Open();
 
                 var command = new SqlCommand(
-                    "SELECT o.id_observacion, o.descripcion, o.dia , a.nombre, a.id_actividad, p.nombre, p.id_proyecto" +
+                    "SELECT id_observacion, descripcion, dia , nombre_actividad, ap.id_actividad, nombre_proyecto, ap.id_proyecto " +
                     "FROM observacion AS o INNER JOIN " +
-                    "(SELECT a.nombre, a.id_actividad, p_nombre, p.id_proyecto FROM actividad AS a " +
-                    "INNER JOIN proyecto AS p ON a.id_proyecto = p.id_proyecto) " +
-                    "ON o.id_actividad = a.actividad WHERE o.id_observacion = @id", conn);
+                    "(SELECT a.nombre AS nombre_actividad, a.id_actividad, p.nombre AS nombre_proyecto, p.id_proyecto FROM actividad AS a " +
+                    "INNER JOIN proyecto AS p ON a.id_proyecto = p.id_proyecto) AS ap " +
+                    "ON o.id_actividad = ap.id_actividad WHERE id_observacion = @id", conn);
 
                 var idP = new SqlParameter("@id", SqlDbType.Int, 0) { Value = idObservacion };
 
@@ -67,13 +67,13 @@ namespace Progra_Reque_Muestreo.Models
                 {
                     if (reader.Read())
                     {
-                        dic["id_observacion"] = (int)reader["o.id_observacion"];
-                        dic["descripcion"] = reader["o.descripcion"].ToString();
-                        dic["dia"] = (DateTime)reader["o.dia"];
-                        dic["nombre_actividad"] = reader["a.nombre"].ToString();
-                        dic["id_actividad"] = (int)reader["a.id_actividad"];
-                        dic["nombre_proyecto"] = reader["p.nombre"].ToString();
-                        dic["id_proyecto"] = (int)reader["p.id_proyecto"];
+                        dic["id_observacion"] = (int)reader["id_observacion"];
+                        dic["descripcion"] = reader["descripcion"].ToString();
+                        dic["dia"] = (DateTime)reader["dia"];
+                        dic["nombre_actividad"] = reader["nombre_actividad"].ToString();
+                        dic["id_actividad"] = (int)reader["id_actividad"];
+                        dic["nombre_proyecto"] = reader["nombre_proyecto"].ToString();
+                        dic["id_proyecto"] = (int)reader["id_proyecto"];
                     }
                 }
 
@@ -91,7 +91,7 @@ namespace Progra_Reque_Muestreo.Models
 
                 var command = new SqlCommand(
                     "INSERT INTO observacion(id_actividad, descripcion, dia) " +
-                    "OUTPUT Inserted.id_observacion VALUES(@id_actividad, @descripcion, @dia", conn);
+                    "OUTPUT Inserted.id_observacion VALUES(@id_actividad, @descripcion, @dia)", conn);
 
                 var idA = new SqlParameter("@id_actividad", SqlDbType.Int, 0) { Value = idActividad };
                 var desc = new SqlParameter("@descripcion", SqlDbType.VarChar, 200) { Value = descripcion };

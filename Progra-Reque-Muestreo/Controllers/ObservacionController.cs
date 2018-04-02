@@ -7,7 +7,7 @@ using System.Web.Mvc;
 
 namespace Progra_Reque_Muestreo.Controllers
 {
-    [RoutePrefix("Proyecto/Actividad/Observacion")]
+    [RoutePrefix("Proyecto/Observacion")]
     [Route("{action}")]
     public class ObservacionController : Controller
     {
@@ -34,22 +34,23 @@ namespace Progra_Reque_Muestreo.Controllers
         }
 
         // POST: Observación/Create
-        [HttpPost, Route("Crear")]
-        public ActionResult Crear(FormCollection collection)
+        [HttpPost] [Route("Crear")]
+        public ActionResult Crear(int idProyecto, FormCollection collection)
         {
             try
             {
                 var descripcion = collection["descripcion"];
-                var idActividad = int.Parse(collection["id_actividad"]);
+                var idActividad = int.Parse(collection["actividad"]);
                 var dia = DateTime.Parse(collection["dia"]);
 
                 DatosObservacion.Crear(idActividad, descripcion, dia);
 
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { idProyecto });
             }
-            catch
+            catch(Exception e)
             {
-                return View();
+                ViewData["exception"] = e;
+                return View("Error");
             }
         }
 
@@ -60,10 +61,13 @@ namespace Progra_Reque_Muestreo.Controllers
             try
             {
                 var listaActividades = DatosActividad.getActividades(idProyecto);
+
                 ViewData["actividades"] = listaActividades;
                 var dic = DatosProyecto.GetProyecto(idProyecto);
+
                 ViewData["proyecto"] = new Tuple<int, String>(idProyecto, dic["nombre"]);
                 ViewData["observacion"] = DatosObservacion.GetObservacion(idObservacion);
+
                 return View();
             }
             catch(Exception e)

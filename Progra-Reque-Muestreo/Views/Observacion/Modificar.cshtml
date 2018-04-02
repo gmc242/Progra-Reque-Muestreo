@@ -1,17 +1,30 @@
-﻿
-@{
-    Layout = null;
+﻿@{
+    var proyecto = ViewData["proyecto"] as Tuple<int, String>;
+    var actividades = ViewData["actividades"] as List<Tuple<int, String>>;
+    var observacion = ViewData["observacion"] as Dictionary<String, dynamic>;
+    <h2>Modificar Observación</h2><br /><br />
+    using (Html.BeginForm(new { idObservacion = observacion["id_observacion"], idProyecto = proyecto.Item1 }))
+    {
+        <span>Día de Observación</span><br />
+        <input type="date" name="dia" value=@observacion["dia"].ToString("yyyy-MM-dd")><br />
+        <span>Descripcion o comentario sobre la observación</span>
+        <textarea name="descripcion">@observacion["descripcion"]</textarea><br />
+        <span>Actividad a la que pertenece la observación</span><br />
+        <select name="actividad">
+            @foreach (Tuple<int, String> actividad in actividades)
+            {
+                if(observacion["id_actividad"] == actividad.Item1)
+                {
+                    <option selected="selected" value=@actividad.Item1>@actividad.Item2</option>
+                }
+                else
+                {
+                    <option value=@actividad.Item1>@actividad.Item2</option>
+                }
+            }
+        </select><br />
+        <input type="hidden" name="id_proyecto" value=@proyecto.Item1>
+        <input type="hidden" name="id_observacion" value=@observacion["id_observacion"]>
+        <input type="submit" value="Modificar Observación">
+    }
 }
-
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Modificar</title>
-</head>
-<body>
-    <div> 
-    </div>
-</body>
-</html>

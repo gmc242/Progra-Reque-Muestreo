@@ -1,17 +1,21 @@
-﻿
-@{
-    Layout = null;
+﻿@{ 
+    var proyecto = ViewData["proyecto"] as Tuple<int, String>;
+    var actividades = ViewData["actividades"] as List<Tuple<int, String>>;
+    <h2>Crear Observación</h2><br /><br />
+    using (Html.BeginForm("Crear", "Observacion", new { idProyecto = proyecto.Item1 }, FormMethod.Post, null))
+    {
+        <span>Día de Observación</span><br />
+        <input type="date" name="dia"><br />
+        <span>Descripcion o comentario sobre la observación</span>
+        <textarea name="descripcion"></textarea><br />
+        <span>Actividad a la que pertenece la observación</span><br />
+        <select name="actividad">
+            @foreach(Tuple<int,String> actividad in actividades)
+            {
+                <option value=@actividad.Item1>@actividad.Item2</option>
+            }
+        </select><br />
+        <input type="hidden" name="id_proyecto" value=@proyecto.Item1>
+        <input type="submit" value="Crear Observación">
+    }
 }
-
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Crear</title>
-</head>
-<body>
-    <div> 
-    </div>
-</body>
-</html>

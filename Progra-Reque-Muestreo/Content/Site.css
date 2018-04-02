@@ -129,6 +129,10 @@ textarea {
     display: none;
 }
 
+.ListaAcciones{
+    display: none;
+}
+
 @media screen and (max-height: 450px) {
     #mySidenav {
         padding-top: 15px;
