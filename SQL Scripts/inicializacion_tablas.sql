@@ -56,8 +56,10 @@ CREATE TABLE tarea(
 	nombre varchar(20) NOT NULL,
 	descripcion varchar(200),
 	id_actividad integer NOT NULL,
+	categoria varchar(2) NOT NULL,
 	primary key (id_tarea),
-	foreign key (id_actividad) references actividad
+	foreign key (id_actividad) references actividad,
+	constraint cate check (categoria IN ('TP','TC','TI'))
 );
 
 CREATE TABLE observacion(
@@ -72,16 +74,12 @@ CREATE TABLE observacion(
 CREATE TABLE observacion_de_tarea(
 	id_observacion_tarea integer identity(1,1),
 	id_observacion integer NOT NULL,
-	id_sujeto integer,
+	id_sujeto integer NOT NULL,
 	id_tarea integer NOT NULL,
-	fecha_hora datetime NOT NULL,
-	categoria varchar(2) NOT NULL,
-	comentario varchar(200),
 	primary key(id_observacion_tarea),
 	foreign key(id_sujeto) references sujetos_de_prueba,
 	foreign key(id_tarea) references tarea,
 	foreign key(id_observacion) references observacion,
-	constraint cate check (categoria IN ('TP','TC','TI'))
 );
 
 CREATE TABLE ronda_de_observacion(
