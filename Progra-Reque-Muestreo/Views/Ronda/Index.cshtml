@@ -1,0 +1,33 @@
+﻿@{ 
+    var observacion = ViewData["observacion"] as Tuple<int, String>;
+    var rondas = ViewData["rondas"] as List<Tuple<int, String>>;
+
+    <h2>Control de Rondas de Observación</h2><br />
+    <p>En esta sección puede crear, modificar y eliminar rondas de observación de la observacion: observacion.Item2</p><br />
+
+    if(rondas.Count > 0)
+    {
+        <p>Rondas registradas: </p><br />
+        <ul>
+            @foreach(Tuple<int, String> ronda in rondas)
+            {
+                <li>
+                    <span>
+                        @Html.ActionLink(ronda.Item2, "Modificar", "Ronda",
+                            new { idRonda = ronda.Item1, idObservacion = observacion.Item1 }, null)
+                        <button>
+                            @Html.ActionLink("Eliminar", "Eliminar", "Ronda",
+                             new { idRonda = ronda.Item1, idObservacion = observacion.Item1 }, null)
+                        </button>
+                    </span>
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p>No hay rondas registradas todavía para la observación</p><br />
+    }
+    <p>Si desea crear una ronda, haga click sobre el boton</p><br />
+    <button>@Html.ActionLink("Crear Ronda", "Crear", "Ronda", new { idObservacion = observacion.Item1 }, null)</button>
+}

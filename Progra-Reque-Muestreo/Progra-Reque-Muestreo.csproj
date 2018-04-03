@@ -145,6 +145,7 @@
     <Compile Include="Controllers\ActividadController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ObservacionController.cs" />
+    <Compile Include="Controllers\ObservacionTareasController.cs" />
     <Compile Include="Controllers\ProyectoController.cs" />
     <Compile Include="Controllers\RondaController.cs" />
     <Compile Include="Controllers\SujetoController.cs" />
@@ -157,6 +158,7 @@
     <Compile Include="Models\DatosActividad.cs" />
     <Compile Include="Models\DatosObservacion.cs" />
     <Compile Include="Models\DatosProyecto.cs" />
+    <Compile Include="Models\DatosRonda.cs" />
     <Compile Include="Models\DatosSujeto.cs" />
     <Compile Include="Models\DatosTarea.cs" />
     <Compile Include="Models\DatosUsuarios.cs" />
@@ -217,10 +219,13 @@
     <Content Include="Views\Observacion\Index.cshtml" />
     <Content Include="Views\Observacion\Crear.cshtml" />
     <Content Include="Views\Observacion\Modificar.cshtml" />
+    <Content Include="Views\Ronda\Index.cshtml" />
+    <Content Include="Views\Ronda\Crear.cshtml" />
+    <Content Include="Views\Ronda\Modificar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Ronda\" />
+    <Folder Include="Views\ObservacionTareas\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

@@ -155,5 +155,11 @@ namespace Progra_Reque_Muestreo.Models
             }
         }
 
+        public static Tuple<int, String> ToTuple(Dictionary<String, dynamic> dic)
+        {
+            String s = "Observación de ID: " + dic["id_observacion"].ToString() + " sobre la actividad " +
+                dic["nombre_actividad"] + " hecha el dia " + dic["dia"].ToString(ControladorGlobal.GetDateFormat());
+            return new Tuple<int, string>(dic["id_observacion"], s);
+        }
     }
 }

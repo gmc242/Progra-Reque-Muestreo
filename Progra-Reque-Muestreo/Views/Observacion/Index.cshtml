@@ -23,8 +23,10 @@
                         </button>
                         <button onclick=@onClickS>Acciones Disponibles</button>
                         <ul id=@liId  class="ListaAcciones">
-                            <li>Manejo de Rondas de Observación</li>
-                            <li>Manejo de Observaciones de Tareas</li>
+                            <li>@Html.ActionLink("Control de Rondas de Observación", "Index",
+                               "Ronda", new { idObservacion = observacion.Item1 }, null)</li>
+                            <li>@Html.ActionLink("Control de Observaciones de Tareas", "Index",
+                               "ObservacionTarea", new { idObservacion = observacion.Item1 }, null)</li>
                         </ul>
                     </li>
                 }
