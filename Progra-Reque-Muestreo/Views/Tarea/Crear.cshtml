@@ -7,7 +7,13 @@
         <span>Nombre:   </span>
         <input type="text" name="nombre"><br>
         <span>Descripcion:</span><br>
-        <textarea name="descripcion"></textarea><br>
+        <textarea name="descripcion"></textarea><br><br />
+        <span>Categoría: </span><br />
+        <select name="categoria">
+            <option value="TP">Productiva</option>
+            <option value="TC">Colaborativa</option>
+            <option value="TI">Improductiva</option>
+        </select><br /><br />
         <input type="hidden" name="id_actividad" value=@actividad.Item1.ToString()>
         <input type="submit" value="Crear Tarea">
     }

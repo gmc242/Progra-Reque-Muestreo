@@ -145,7 +145,7 @@
     <Compile Include="Controllers\ActividadController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ObservacionController.cs" />
-    <Compile Include="Controllers\ObservacionTareasController.cs" />
+    <Compile Include="Controllers\ObservacionTareaController.cs" />
     <Compile Include="Controllers\ProyectoController.cs" />
     <Compile Include="Controllers\RondaController.cs" />
     <Compile Include="Controllers\SujetoController.cs" />
@@ -157,6 +157,7 @@
     <Compile Include="Models\ControladorGlobal.cs" />
     <Compile Include="Models\DatosActividad.cs" />
     <Compile Include="Models\DatosObservacion.cs" />
+    <Compile Include="Models\DatosObservacionTarea.cs" />
     <Compile Include="Models\DatosProyecto.cs" />
     <Compile Include="Models\DatosRonda.cs" />
     <Compile Include="Models\DatosSujeto.cs" />
@@ -222,10 +223,10 @@
     <Content Include="Views\Ronda\Index.cshtml" />
     <Content Include="Views\Ronda\Crear.cshtml" />
     <Content Include="Views\Ronda\Modificar.cshtml" />
+    <Content Include="Views\ObservacionTarea\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\ObservacionTareas\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

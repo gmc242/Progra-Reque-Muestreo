@@ -1,0 +1,72 @@
+﻿@{ 
+    var observacion = ViewData["observacion"] as Tuple<int, String>;
+    var sujetos = ViewData["sujetos"] as List<Tuple<int,String>>;
+    var tareas = ViewData["tareas"] as List<Tuple<int,String>>;
+    var observacionesTareas = ViewData["observacionesTareas"] as List<Dictionary<String, dynamic>>;
+
+    <h2>Control de Observaciones de Tareas</h2><br />
+    <p>En esta sección podrá manejar las observaciones específicas sobre las tareas de la actividad de la observación: @observacion.Item2</p><br /><br />
+
+    <table class="table-bordered">
+        @for(int i = 0; i < tareas.Count + 1; i++)
+        {
+            <tr>
+                @{ 
+                    for(int j = 0; j < sujetos.Count + 1; j++)
+                    {
+                        if(i == 0 && j == 0)
+                        {
+                            <th></th>
+                        }
+                        else if (i == 0)
+                        {
+                            <th>@sujetos[j-1].Item2</th>
+                        }
+                        else if(j == 0)
+                        {
+                            <th>@tareas[i-1].Item2</th>
+                        }
+                        else
+                        {
+                            <td>
+                                @{ 
+                                    var cant = 0;
+                                    var idSujeto = sujetos[j - 1].Item1;
+                                    var idTarea = tareas[i - 1].Item1;
+                                    var idObservacionTarea = 0;
+
+                                    foreach(Dictionary<String, dynamic> observacionTarea in observacionesTareas)
+                                    {
+                                        if (observacionTarea["id_tarea"] == idTarea &&
+                                            observacionTarea["id_sujeto"] == idSujeto)
+                                        {
+                                            cant++;
+                                            idObservacionTarea = observacionTarea["id_observacion_tarea"];
+                                        }
+                                    }
+
+                                <span>
+                                    Cantidad: @cant
+                                        <button type="button" class="glyphicon-plus" onclick="location.href='@Url.Action("Crear", "ObservacionTarea", new { idObservacion = observacion.Item1, idSujeto, idTarea }, null)'"></button>
+                                        <!--<button class="glyphicon-plus">
+                                            //Html.ActionLink("Mas", "Crear",
+                                           new { idObservacion = observacion.Item1, idSujeto, idTarea }, null)
+                                        </button>-->
+                                        @if(cant > 0)
+                                        {
+                                            <button type="button" class="glyphicon-minus" onclick="location.href='@Url.Action("Eliminar", "ObservacionTarea", new { idObservacion = observacion.Item1, idObservacionTarea }, null)'"></button>
+                                            <!--button class="glyphicon-minus">
+                                                //Html.ActionLink("Menos", "Eliminar",
+                                               new { idObservacion = observacion.Item1, idObservacionTarea})
+                                            </!--button>-->
+                                        }
+                                </span>
+                                }
+                            </td>
+                        }
+                    }
+                }
+            </tr>
+        }
+    </table>
+}

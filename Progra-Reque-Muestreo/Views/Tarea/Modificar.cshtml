@@ -6,7 +6,28 @@
         <span>Nombre:   </span>
         <input type="text" name="nombre" value=@tarea["nombre"]><br>
         <span>Descripcion:</span><br>
-        <textarea name="descripcion">@tarea["descripcion"]</textarea><br>
+        <textarea name="descripcion">@tarea["descripcion"]</textarea><br><br />
+        <span>Categoría: </span><br />
+        <select name="categoria">
+            @if(tarea["categoria"] == "TP")
+            {
+                <option selected="selected" value="TP">Productiva</option>
+                <option value="TC">Colaborativa</option>
+                <option value="TI">Improductiva</option>
+            }
+            else if(tarea["categoria"] == "TC")
+            {
+                <option value="TP">Productiva</option>
+                <option selected="selected" value="TC">Colaborativa</option>
+                <option value="TI">Improductiva</option>
+            }
+            else
+            {
+                <option value="TP">Productiva</option>
+                <option value="TC">Colaborativa</option>
+                <option selected="selected" value="TI">Improductiva</option>
+            }
+        </select><br /><br />
         <input type="hidden" name="id_actividad" value=@tarea["id_actividad"].ToString()>
         <input type="hidden" name="id_tarea" value=@tarea["id_tarea"].ToString()>
         <input type="submit" value="Modificar Tarea">

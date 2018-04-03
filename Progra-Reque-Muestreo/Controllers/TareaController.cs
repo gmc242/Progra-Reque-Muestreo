@@ -56,8 +56,9 @@ namespace Progra_Reque_Muestreo.Controllers
                 var nombre = collection["nombre"].ToString();
                 var descripcion = collection["descripcion"].ToString();
                 var idAct = int.Parse(collection["id_actividad"]);
+                var categoria = collection["categoria"].ToString();
 
-                DatosTarea.CrearTarea(idAct, nombre, descripcion);
+                DatosTarea.CrearTarea(idAct, nombre, descripcion, categoria);
 
                 return RedirectToAction("Index", new { idActividad });
             }
@@ -96,8 +97,9 @@ namespace Progra_Reque_Muestreo.Controllers
                 var descripcion = collection["descripcion"].ToString();
                 var idAct = int.Parse(collection["id_actividad"]);
                 var idTar = int.Parse(collection["id_tarea"]);
+                var categoria = collection["categoria"].ToString();
 
-                DatosTarea.ModificarTarea(idTar, idAct, nombre, descripcion);
+                DatosTarea.ModificarTarea(idTar, idAct, nombre, descripcion, categoria);
 
                 return RedirectToAction("Index", new { idActividad = idAct });
             }

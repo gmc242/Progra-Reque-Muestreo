@@ -62,6 +62,7 @@ namespace Progra_Reque_Muestreo.Models
                         dic["descripcion"] = reader["descripcion"].ToString();
                         dic["id_actividad"] = (int)reader["id_actividad"];
                         dic["id_tarea"] = idTarea;
+                        dic["categoria"] = reader["categoria"].ToString();
                     }
                 }
 
@@ -71,27 +72,30 @@ namespace Progra_Reque_Muestreo.Models
             return dic;
         }
 
-        public static int CrearTarea(int idActividad, String nombre, String descripcion)
+        public static int CrearTarea(int idActividad, String nombre, String descripcion, String categoria)
         {
             using(var conn = ControladorGlobal.GetConn())
             {
                 conn.Open();
 
                 var command = new SqlCommand(
-                    "INSERT INTO tarea(id_actividad, nombre, descripcion) " +
-                    "OUTPUT Inserted.id_tarea VALUES(@id, @nombre, @descripcion)", conn);
+                    "INSERT INTO tarea(id_actividad, nombre, descripcion, categoria) " +
+                    "OUTPUT Inserted.id_tarea VALUES(@id, @nombre, @descripcion, @categoria)", conn);
 
                 var idP = new SqlParameter("@id", SqlDbType.Int, 0);
                 var nombreP = new SqlParameter("@nombre", SqlDbType.VarChar, 20);
                 var descripcionP = new SqlParameter("@descripcion", SqlDbType.VarChar, 200);
+                var cateP = new SqlParameter("@categoria", SqlDbType.VarChar, 2);
 
                 idP.Value = idActividad;
                 nombreP.Value = nombre;
                 descripcionP.Value = descripcion;
+                cateP.Value = categoria;
 
                 command.Parameters.Add(idP);
                 command.Parameters.Add(nombreP);
                 command.Parameters.Add(descripcionP);
+                command.Parameters.Add(cateP);
 
                 int res = (int)command.ExecuteScalar();
 
@@ -101,29 +105,32 @@ namespace Progra_Reque_Muestreo.Models
             }
         }
 
-        public static void ModificarTarea(int idTarea, int idActividad, String nombre, String descripcion)
+        public static void ModificarTarea(int idTarea, int idActividad, String nombre, String descripcion, String categoria)
         {
             using (var conn = ControladorGlobal.GetConn())
             {
                 conn.Open();
 
                 var command = new SqlCommand("UPDATE tarea SET id_actividad = @id_actividad, " +
-                    "nombre = @nombre, descripcion = @descripcion WHERE id_tarea = @id_tarea", conn);
+                    "nombre = @nombre, descripcion = @descripcion, categoria = @categoria WHERE id_tarea = @id_tarea", conn);
 
                 var idA = new SqlParameter("@id_actividad", SqlDbType.Int, 0);
                 var idT = new SqlParameter("@id_tarea", SqlDbType.Int, 0);
                 var nombreP = new SqlParameter("@nombre", SqlDbType.VarChar, 20);
                 var descripcionP = new SqlParameter("@descripcion", SqlDbType.VarChar, 200);
+                var cateP = new SqlParameter("@categoria", SqlDbType.VarChar, 2);
 
                 idA.Value = idActividad;
                 idT.Value = idTarea;
                 nombreP.Value = nombre;
                 descripcionP.Value = descripcion;
+                cateP.Value = categoria;
 
                 command.Parameters.Add(idA);
                 command.Parameters.Add(idT);
                 command.Parameters.Add(nombreP);
                 command.Parameters.Add(descripcionP);
+                command.Parameters.Add(cateP);
 
                 command.ExecuteNonQuery();
 
