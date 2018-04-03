@@ -36,7 +36,7 @@ namespace Progra_Reque_Muestreo.Controllers
             }
             else
             {
-                ViewData["exception"] = new Exception("Solo el usuario administrador puede Crear nuevos proyectos.");
+                ViewData["exception"] = new Exception("Solo el usuario administrador puede crear nuevos proyectos.");
                 return View("Error");
             }
         }
@@ -85,11 +85,19 @@ namespace Progra_Reque_Muestreo.Controllers
                 var dic = DatosProyecto.GetProyecto(id);
                 if (dic.ContainsKey("nombre"))
                 {
-                    ViewData["proyecto"] = dic;
-                    var usuarios = DatosUsuarios.getUsuariosString();
-                    ViewData["usuarios"] = usuarios;
-                    ViewData["id"] = id;
-                    return View();
+                    if(DatosUsuarios.revisarCredenciales("admin") ||
+                        DatosUsuarios.revisarCredenciales(dic["lider_id"]))
+                    {
+                        ViewData["proyecto"] = dic;
+                        var usuarios = DatosUsuarios.getUsuariosString();
+                        ViewData["usuarios"] = usuarios;
+                        ViewData["id"] = id;
+                        return View();
+                    }
+                    else
+                    {
+                        throw new Exception("No tiene los privilegios necesarios para ver esta página.");
+                    }
                 }
                 else
                 {
