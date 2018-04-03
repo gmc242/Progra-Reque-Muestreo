@@ -112,6 +112,7 @@ textarea {
         #subUsuario a:hover {
             color: #818181;
         }
+
 #main {
     transition: margin-left 0.3s;
     padding: 16px;
@@ -130,6 +131,10 @@ textarea {
 }
 
 .ListaAcciones{
+    display: none;
+}
+
+.ListaSubProyecto{
     display: none;
 }
 

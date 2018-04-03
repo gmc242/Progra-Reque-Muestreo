@@ -71,3 +71,12 @@ function mostrarAccionesObs(id) {
         document.getElementById("Lista" + id).style.display = "none"
     }
 }
+
+function mostrarAccionesProyecto(id) {
+    if ((document.getElementById("ListaProyecto" + id).style.display == "") ||
+        (document.getElementById("ListaProyecto" + id).style.display == "none")) {
+        document.getElementById("ListaProyecto" + id).style.display = "block"
+    } else {
+        document.getElementById("ListaProyecto" + id).style.display = "none"
+    }
+}
