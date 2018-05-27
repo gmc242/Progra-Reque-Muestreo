@@ -23,8 +23,10 @@ CREATE TABLE proyecto(
 	fecha_fin Date NOT NULL,
 	lider_id varchar(20) NOT NULL,
 	descripcion varchar(1000),
+	tipo_muestreo varchar(2),
 	primary key(id_proyecto),
-	foreign key(lider_id) references usuario
+	foreign key(lider_id) references usuario,
+	constraint tipo check (tipo_muestreo IN ('MP','MD', 'MF'))
 );
 
 CREATE TABLE asistentes_por_proyecto(
@@ -71,17 +73,6 @@ CREATE TABLE observacion(
 	foreign key(id_actividad) references actividad
 );
 
-CREATE TABLE observacion_de_tarea(
-	id_observacion_tarea integer identity(1,1),
-	id_observacion integer NOT NULL,
-	id_sujeto integer NOT NULL,
-	id_tarea integer NOT NULL,
-	primary key(id_observacion_tarea),
-	foreign key(id_sujeto) references sujetos_de_prueba,
-	foreign key(id_tarea) references tarea,
-	foreign key(id_observacion) references observacion,
-);
-
 CREATE TABLE ronda_de_observacion(
 	id_ronda integer identity(1,1),
 	id_observacion integer NOT NULL,
@@ -91,6 +82,17 @@ CREATE TABLE ronda_de_observacion(
 	descripcion varchar(200),
 	primary key(id_ronda),
 	foreign key(id_observacion) references observacion
+);
+
+CREATE TABLE observacion_de_tarea(
+	id_observacion_tarea integer identity(1,1),
+	id_ronda integer NOT NULL,
+	id_sujeto integer NOT NULL,
+	id_tarea integer NOT NULL,
+	primary key(id_observacion_tarea),
+	foreign key(id_sujeto) references sujetos_de_prueba,
+	foreign key(id_tarea) references tarea,
+	foreign key(id_ronda) references ronda_de_observacion
 );
 
 CREATE TABLE asistentes_por_actividad(
@@ -106,6 +108,13 @@ CREATE TABLE usuarios_por_actividad(
 	foreign key(id_actividad) references actividad,
 	foreign key(id_usuario) references usuario
 );
+
+CREATE TABLE sujetos_por_actividad(
+	id_actividad int NOT NULL,
+	id_sujeto int NOT NULL,
+	foreign key (id_actividad) references actividad,
+	foreign key (id_sujeto) references sujetos_de_prueba
+)
 
 
 
