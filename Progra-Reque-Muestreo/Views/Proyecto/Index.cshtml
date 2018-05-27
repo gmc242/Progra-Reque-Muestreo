@@ -3,12 +3,137 @@
 }
 
 <h2>Administración de Proyectos</h2>
-@{ 
-    var lista = ViewData["lista_proyectos"] as List<Tuple<int,String>>;
+@{
+    var lista = ViewData["lista_proyectos"] as List<Tuple<int, String>>;
     if (lista != null)
     {
+
+        // Crea un sistema de tabs para cada proyecto
+        using (Html.BeginForm(Html.BeginForm("Info", "Proyecto", FormMethod.Post, 
+            new { onSubmit = "interceptSubmitProyecto()"})))
+        {
+            <nav>
+                @{
+                    foreach (Tuple<int, String> proyecto in lista)
+                    {
+                        
+                        <button type="submit" class="nav-tabs-justified" name="proyecto", value=@proyecto.Item1>
+                            @proyecto.Item2
+                        </button>
+                    }
+                }
+            </nav>
+        }
+
+        // Crea la vista por proyecto que contiene valores básicos y botones de navegación
+        <div class="container" id="contenedorProyecto">
+    @{
+        if (ViewData.Keys.Contains("proyecto_abierto"))
+        {
+            var proyecto = ViewData["proyecto_abierto"] as Dictionary<String, dynamic>;
+            using (Html.BeginForm("AccionColaboradores", "Proyecto", new { id = proyecto["id_proyecto"] }))
+            {
+                <br>
+                <div class="row">
+                    <div class="col-md-3">
+                        Trabajadores del proyecto<br>
+                        <select multiple="multiple" name="colaboradores">
+                            @foreach (Tuple<int, String> colaborador in proyecto["colaboradores"] as List<Tuple<int, String>>)
+                             {
+                                <option value=@colaborador.Item1>@colaborador.Item2</option>
+                             }
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        Nombre<br>
+                        <input type="text" name="nombreColaborador"><br>
+                        Dato extra <br>
+                        <input type="text" name="dato">
+                    </div>
+                    <div class="col-md-3">
+                        <br />
+                        <input class="btn-group-spacing" type="submit" name="accion" value="Agregar" /> <br /> <br />
+                        <input class="btn-group-spacing" type="submit" name="accion" value="Borrar">
+                    </div>
+                </div>
+
+            }
+            <hr />
+            using (Html.BeginForm("AccionOperaciones", "Proyecto", new { id = proyecto["id_proyecto"]}))
+            {
+                <div class="row">
+                    <div class="col-md-3">
+                        Operacion
+                        <select name="operacion">
+                            @foreach(Tuple<int, String> operacion in proyecto["operaciones"] as List<Tuple<int, String>>){
+                                <option value=@operacion.Item1> @operacion.Item2 </option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-5">
+                        <input class="btn-group-spacing" type="submit" name="accion" value="Cargar" />
+                        <input class="btn-group-spacing" type="submit" name="accion" value="Modificar" />
+                        <input class="btn-group-spacing" type="submit" name="accion" value="Eliminar" />
+                        <input class="btn-group-spacing" type="submit" name="accion" value="Agregar" />
+                        <input class="btn-group-spacing" type="submit" name="accion" value="Consolidado" />
+                    </div>
+                </div>
+            }
+            <hr />
+            using (Html.BeginForm("AccionObservaciones", "Proyecto", new { id = proyecto["id_proyecto"] }))
+            {
+                <div class="row">
+                    <div class="col-md-5">
+                        Observaciones para la operación <br />
+                        <select multiple="multiple" name="observaciones">
+                            @if (ViewData.Keys.Contains("observaciones"))
+                            {
+                                foreach(Tuple<int, String> observacion in ViewData["observaciones"] as List<Tuple<int, String>>)
+                                {
+                                    <option value=@observacion.Item1>
+                                        @observacion.Item2
+                                    </option>       
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <br /><br />
+                        <input class="btn-group-spacing" type="submit" name="accion" value="Administrar" /> 
+                        <input class="btn-group-spacing" type="submit" name="accion" value="Eliminar" /> 
+                        <input class="btn-group-spacing" type="submit" name="accion" value="Agregar" />
+                    </div>
+                </div>
+            }
+            <hr />
+
+            using(Html.BeginForm("AccionProyecto", "Proyecto", new { id = proyecto["id_proyecto"] }))
+            {
+                <div class="row btn-group-lg">
+                    <input class="btn-group-spacing" type="submit" name="accion" value="Consolidados y Gráficos"/> 
+                    <input class="btn-group-spacing" type="submit" name="accion" value="Informe General"/> 
+                    <input class="btn-group-spacing" type="submit" name="accion" value="Informe por Recorridos"/> 
+                </div>
+                <br />
+                <div class="row btn-group-lg">
+                    <input class="btn-group-spacing" type="submit" name="accion" value="Modificar Proyecto"/> 
+                    <input class="btn-group-spacing" type="submit" name="accion" value="Tipo de muestreo y cálculos"/> 
+                    <input class="btn-group-spacing" type="submit" name="accion" value="Finalizar Proyecto"/>
+                </div>
+            }
+
+        }
+    }
+        
+        
+        
+        </div>
+    }
+
+    /*if (lista != null)
+    {
         <ul>
-            @{ 
+            @{
                 foreach(Tuple<int,String> proyecto in lista)
                 {
                     var onClickS = "mostrarAccionesProyecto('" + proyecto.Item1 + "')";
@@ -28,5 +153,5 @@
                 }
             }
         </ul>
-    }
+    }*/
 }

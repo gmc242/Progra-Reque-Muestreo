@@ -18,9 +18,9 @@ namespace Progra_Reque_Muestreo.Models
 
                 var stmn = new SqlCommand(
                     "INSERT INTO proyecto(nombre, tiempo_muestreo, tamano_muestreo, tiempo_entre_muestreos, " +
-                    "fecha_inicio, fecha_fin, lider_id, descripcion) OUTPUT Inserted.id_proyecto " +
+                    "fecha_inicio, fecha_fin, lider_id, descripcion, tipo_muestreo) OUTPUT Inserted.id_proyecto " +
                     "VALUES (@nom, @tiempo_muestreo, " +
-                    "@tamano_muestreo, @tiempo_entre_muestreos, @fecha_inicio, @fecha_fin, @lider_id, @descripcion)",
+                    "@tamano_muestreo, @tiempo_entre_muestreos, @fecha_inicio, @fecha_fin, @lider_id, @descripcion, @tipo)",
                     conn);
 
                 var nom = new SqlParameter("@nom", SqlDbType.VarChar, 50);
@@ -31,6 +31,7 @@ namespace Progra_Reque_Muestreo.Models
                 var fecha_final = new SqlParameter("@fecha_fin", SqlDbType.Date, 0);
                 var lider = new SqlParameter("@lider_id", SqlDbType.VarChar, 40);
                 var desc = new SqlParameter("@descripcion", SqlDbType.VarChar, 1000);
+                var tipo = new SqlParameter("@tipo", SqlDbType.VarChar, 2);
 
                 nom.Value = nombre;
                 tiempo_muestreo.Value = tiempoObs;
@@ -40,6 +41,7 @@ namespace Progra_Reque_Muestreo.Models
                 fecha_inicio.Value = inicio;
                 desc.Value = descripcion;
                 lider.Value = idLider;
+                tipo.Value = "MP";
 
                 stmn.Parameters.Add(nom);
                 stmn.Parameters.Add(tiempo_muestreo);
@@ -49,6 +51,7 @@ namespace Progra_Reque_Muestreo.Models
                 stmn.Parameters.Add(fecha_final);
                 stmn.Parameters.Add(lider);
                 stmn.Parameters.Add(desc);
+                stmn.Parameters.Add(tipo);
 
                 stmn.Prepare();
                 var idProy = (int)stmn.ExecuteScalar();

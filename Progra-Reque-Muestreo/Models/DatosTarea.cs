@@ -46,7 +46,7 @@ namespace Progra_Reque_Muestreo.Models
                 conn.Open();
 
                 var command = new SqlCommand(
-                    "SELECT nombre, descripcion, id_actividad FROM tarea WHERE id_tarea = @id", conn);
+                    "SELECT nombre, descripcion, id_actividad, categoria FROM tarea WHERE id_tarea = @id", conn);
 
                 var idP = new SqlParameter("@id", SqlDbType.Int, 0);
                 idP.Value = idTarea;

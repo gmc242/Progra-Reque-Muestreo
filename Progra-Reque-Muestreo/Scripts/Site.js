@@ -75,8 +75,19 @@ function mostrarAccionesObs(id) {
 function mostrarAccionesProyecto(id) {
     if ((document.getElementById("ListaProyecto" + id).style.display == "") ||
         (document.getElementById("ListaProyecto" + id).style.display == "none")) {
-        document.getElementById("ListaProyecto" + id).style.display = "block"
+        document.getElementById("ListaProyecto" + id).style.display = "block";
     } else {
-        document.getElementById("ListaProyecto" + id).style.display = "none"
+        document.getElementById("ListaProyecto" + id).style.display = "none";
+    }
+}
+
+function interceptSubmitProyecto() {
+    if (document.getElementById("contenedorProyecto").style.display == "" ||
+        document.getElementById("contenedorProyecto").style.display == "none") {
+        document.getElementById("contenedorProyecto").style.display == "block";
+        return true;
+    } else {
+        document.getElementById("contenedorProyecto").style.display == "none";
+        return false;
     }
 }

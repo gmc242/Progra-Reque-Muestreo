@@ -43,6 +43,40 @@ namespace Progra_Reque_Muestreo.Models
             return lista;
         }
 
+        public static List<Tuple<int, String>> GetObservacionesPorActividad(int idActividad)
+        {
+            var lista = new List<Tuple<int, String>>();
+
+            using (var conn = ControladorGlobal.GetConn())
+            {
+                conn.Open();
+
+                var command = new SqlCommand(
+                    "SELECT a.nombre, o.dia, o.id_observacion FROM observacion AS o " +
+                    "INNER JOIN actividad AS a ON a.id_actividad = o.id_actividad WHERE o.id_actividad = @id", conn);
+
+                var idP = new SqlParameter("@id", SqlDbType.Int, 0) { Value = idActividad };
+                command.Parameters.Add(idP);
+                command.Prepare();
+
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var id_observacion = reader["id_observacion"];
+                        String s = "Observación de ID " + id_observacion.ToString() +
+                            " sobre la actividad " + reader["nombre"].ToString() +
+                            " el dia " + ((DateTime)reader["dia"]).ToString(ControladorGlobal.GetDateFormat());
+                        lista.Add(new Tuple<int, string>((int)reader["id_observacion"], s));
+                    }
+                }
+
+                conn.Close();
+            }
+
+            return lista;
+        }
+
         public static Dictionary<String, dynamic> GetObservacion(int idObservacion)
         {
             var dic = new Dictionary<String, dynamic>();
