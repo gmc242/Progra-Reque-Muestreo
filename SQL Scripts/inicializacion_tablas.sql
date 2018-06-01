@@ -8,6 +8,7 @@ CREATE TABLE usuario(
 	nombre varchar(40) NOT NULL,
 	sal binary(32) NOT NULL,
 	pass_hash binary(32) NOT NULL,
+	administrador bit,
 	primary key(identificador)
 );
 
@@ -93,13 +94,6 @@ CREATE TABLE observacion_de_tarea(
 	foreign key(id_sujeto) references sujetos_de_prueba,
 	foreign key(id_tarea) references tarea,
 	foreign key(id_ronda) references ronda_de_observacion
-);
-
-CREATE TABLE asistentes_por_actividad(
-	id_asistente varchar(20) NOT NULL,
-	id_actividad int NOT NULL,
-	foreign key(id_asistente) references usuario,
-	foreign key(id_actividad) references actividad
 );
 
 CREATE TABLE usuarios_por_actividad(
