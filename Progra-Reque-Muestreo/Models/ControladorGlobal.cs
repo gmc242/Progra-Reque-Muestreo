@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Progra_Reque_Muestreo.Controllers;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -52,10 +53,40 @@ namespace Progra_Reque_Muestreo.Models
 
         public static void InicializarUsuarios()
         {
-            DatosUsuarios.agregarUsuario("admin", "Usuario Administrador", "admin");
+            DatosUsuarios.agregarUsuario("admin", "Usuario Administrador", "admin", true);
         }
 
-        
+        public static bool ObtenerStatusCantidad(int idOp, int idProy)
+        {
+            try
+            {
+                var proyecto = DatosProyecto.GetProyecto(idProy);
+                var cantidadActual = DatosObservacionTarea.GetCantidadObservacionesPorOperacion(idOp);
+                return cantidadActual >= proyecto["tamano_muestreo"];
+            }catch(Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public static String ObtenerStatusCantidadString(int idOp, int idProy)
+        {
+            try
+            {
+                if(ObtenerStatusCantidad(idOp, idProy))
+                {
+                    return "Ha alcanzado el tamaño de muestreo deseado";
+                }
+                else
+                {
+                    return "No ha alcanzado la cantidad de observaciones deseadas";
+                }
+            }
+            catch(Exception e)
+            {
+                throw e;
+            }
+        }
 
         
     }

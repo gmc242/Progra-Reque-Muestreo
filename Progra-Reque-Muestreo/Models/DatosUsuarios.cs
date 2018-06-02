@@ -10,14 +10,143 @@ namespace Progra_Reque_Muestreo.Models
 {
     public static class DatosUsuarios
     {
-        
-        public static Boolean revisarCredenciales(String usuario)
+        public static String obtenerUsuarioActivo()
         {
             var ctx = HttpContext.Current;
-            if (ctx.Session["usuario"] != null)
-                return ctx.Session["usuario"].ToString() == usuario;
+            if(ctx.Session["usuario"] != null)
+            {
+                return ctx.Session["usuario"].ToString();
+            }
             else
-                return false;
+            {
+                throw new Exception("No se ha iniciado sesión con ningún usuario");
+            }
+        }
+
+        public static Boolean IsAdmin(String usuario)
+        {
+            bool admin = false;
+
+            using (var conn = ControladorGlobal.GetConn())
+            {
+                conn.Open();
+
+                SqlCommand command = new SqlCommand(
+                    "SELECT administrador FROM usuario WHERE identificador = @usuario", conn);
+
+                SqlParameter usuarioP = new SqlParameter("@usuario", System.Data.SqlDbType.VarChar, 20)
+                {
+                    Value = usuario
+                };
+
+                command.Parameters.Add(usuarioP);
+                command.Prepare();
+
+                var temp = command.ExecuteScalar();
+                admin = bool.Parse(temp.ToString());
+
+                conn.Close();
+            }
+
+            return admin;
+        }
+
+        public static Boolean VerificarCredencialesAdmin()
+        {
+            try
+            {
+                var usuario = obtenerUsuarioActivo();
+                bool admin = false;
+
+                return IsAdmin(usuario);
+            }
+            catch(Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public static Boolean VerificarCredencialesLider(int idProy)
+        {
+            var usuario = obtenerUsuarioActivo();
+            var lider = false;
+
+            using(var conn = ControladorGlobal.GetConn())
+            {
+                conn.Open();
+
+                var cmd = new SqlCommand(
+                    "SELECT lider_id FROM proyecto WHERE id_proyecto = @id", conn);
+
+                var par = new SqlParameter("@id", System.Data.SqlDbType.Int, 0)
+                {
+                    Value = idProy
+                };
+
+                cmd.Parameters.Add(par);
+                cmd.Prepare();
+
+                var liderObt = cmd.ExecuteScalar().ToString();
+                lider = (liderObt.Equals(usuario));
+
+                conn.Close();
+            }
+
+            return lider;
+        }
+
+        public static Boolean VerificarCredencialesOperacion(int idOperacion)
+        {
+            try
+            {
+                bool credenciales = false;
+                var usuario = obtenerUsuarioActivo();
+
+                using(var conn = ControladorGlobal.GetConn())
+                {
+                    conn.Open();
+
+                    var command = new SqlCommand(
+                        "SELECT ua.id_actividad, a.nombre " +
+                        "FROM usuarios_por_actividad AS ua " +
+                        "INNER JOIN actividad AS a" +
+                        "ON ua.id_actividad = a.id_actividad" +
+                        "WHERE ua.id_usuario = @usuario " +
+                        "AND ua.id_actividad = @operacion", conn);
+
+                    var parUsuario = new SqlParameter("@usuario", System.Data.SqlDbType.VarChar, 20)
+                    {
+                        Value = usuario
+                    };
+
+                    var parActividad = new SqlParameter("@operacion", System.Data.SqlDbType.Int, 0)
+                    {
+                        Value = idOperacion
+                    };
+
+                    command.Parameters.Add(parUsuario);
+                    command.Parameters.Add(parActividad);
+
+                    command.Prepare();
+
+                    using(var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            credenciales = true;
+                            break;
+                        }
+                    }
+
+                    conn.Close();
+                }
+
+                return credenciales;
+            }
+            catch(Exception e)
+            {
+                throw e;
+            }
         }
 
         public static Boolean iniciarSesion(String usuario, String pass)
@@ -117,24 +246,26 @@ namespace Progra_Reque_Muestreo.Models
             return res;
         }
 
-        public static void agregarUsuario(String usuario, String nombre, String pass)
+        public static void agregarUsuario(String usuario, String nombre, String pass, bool tipo)
         {
-            if(revisarCredenciales("admin"))
+            if(VerificarCredencialesAdmin())
             {
                 using (var conn = ControladorGlobal.GetConn())
                 {
                     conn.Open();
 
-                    var stmn = new SqlCommand("INSERT INTO usuario(identificador, nombre, sal, pass_hash) " +
-                        "VALUES(@id, @nom, @sal, @pass)", conn);
+                    var stmn = new SqlCommand("INSERT INTO usuario(identificador, nombre, administrador, sal, pass_hash) " +
+                        "VALUES(@id, @nom, @tipo, @sal, @pass)", conn);
 
                     var id = new SqlParameter("@id", System.Data.SqlDbType.VarChar, 20);
                     var nombreP = new SqlParameter("@nom", System.Data.SqlDbType.VarChar, 40);
                     var sal = new SqlParameter("@sal", System.Data.SqlDbType.Binary, 32);
                     var passP = new SqlParameter("@pass", System.Data.SqlDbType.Binary, 64);
+                    var tipoP = new SqlParameter("@tipo", System.Data.SqlDbType.Bit, 0);
 
                     id.Value = usuario;
                     nombreP.Value = nombre;
+                    tipoP.Value = tipo;
 
                     // Genera una sal de 32 bits y genera un hash para el pass junto con la sal
                     using (var random = new RNGCryptoServiceProvider())
@@ -157,6 +288,7 @@ namespace Progra_Reque_Muestreo.Models
                     stmn.Parameters.Add(nombreP);
                     stmn.Parameters.Add(sal);
                     stmn.Parameters.Add(passP);
+                    stmn.Parameters.Add(tipoP);
 
                     stmn.Prepare();
                     stmn.ExecuteNonQuery();
@@ -170,9 +302,9 @@ namespace Progra_Reque_Muestreo.Models
             }
         }
 
-        public static void editar(String idActual, String usuario, String nombre, String pass)
+        public static void editar(String idActual, String usuario, String nombre, String pass, bool tipo)
         {
-            if (revisarCredenciales("admin") || revisarCredenciales(usuario))
+            if (VerificarCredencialesAdmin() || obtenerUsuarioActivo().Equals(usuario))
             {
                 using (var conn = ControladorGlobal.GetConn())
                 {
@@ -186,16 +318,19 @@ namespace Progra_Reque_Muestreo.Models
                             "nombre = @nom, " +
                             "sal = @sal, " +
                             "pass_hash = @pass " +
+                            "tipo = @tipo " +
                             "WHERE identificador = @idActual", conn);
                     else
                         stmn = new SqlCommand("UPDATE usuario " +
                             "SET identificador = @id, " +
                             "nombre = @nom " +
+                            "tipo = @tipo " +
                             "WHERE identificador = @idActual", conn);
 
                     var id = new SqlParameter("@id", System.Data.SqlDbType.VarChar, 20);
                     var nombreP = new SqlParameter("@nom", System.Data.SqlDbType.VarChar, 40);
                     var idActualP = new SqlParameter("@idActual", System.Data.SqlDbType.VarChar, 20);
+                    var tipoP = new SqlParameter("@tipo", System.Data.SqlDbType.Bit, 0);
 
                     id.Value = usuario;
                     nombreP.Value = nombre;
@@ -204,6 +339,7 @@ namespace Progra_Reque_Muestreo.Models
                     stmn.Parameters.Add(id);
                     stmn.Parameters.Add(nombreP);
                     stmn.Parameters.Add(idActualP);
+                    stmn.Parameters.Add(tipoP);
 
                     if (!String.IsNullOrEmpty(pass))
                     {
@@ -245,7 +381,7 @@ namespace Progra_Reque_Muestreo.Models
 
         public static Boolean eliminar(String id)
         {
-            if(revisarCredenciales("admin") || revisarCredenciales(id))
+            if(VerificarCredencialesAdmin() || obtenerUsuarioActivo().Equals(id))
             {
                 using (var conn = ControladorGlobal.GetConn())
                 {

@@ -1,43 +1,163 @@
 ﻿@{
     var proyecto = ViewData["proyecto"] as Tuple<int, String>;
+    var operaciones = ViewData["operaciones"] as List<Tuple<int, String>>;
     var observaciones = ViewData["observaciones"] as List<Tuple<int, String>>;
+    var observacion = ViewData["observacion"] as Dictionary<String, dynamic>;
+    var obsTareas = ViewData["obs_tarea"] as List<Dictionary<String, dynamic>>;
+
+    var operacionSel = -1;
+    if (ViewData.Keys.Contains("operacion_sel"))
+    {
+        operacionSel = (int)ViewData["operacion_sel"];
+    }
+
+    var observacionSel = -1;
+    if (ViewData.Keys.Contains("observacion_sel"))
+    {
+        observacionSel = (int)ViewData["observacion_sel"];
+    }
+
+    var status = ViewData["status"] as String;
+    var colaboradores = ViewData["colaboradores"] as List<Tuple<int, String>>;
+    var tareas = ViewData["tareas"] as List<Tuple<int, String>>;
 
     <h2>Control de Observaciones</h2><br />
-    <p>En esta sección podrá crear, modificar y eliminar observaciones del proyecto @proyecto.Item2</p><br />
+    <p>En esta sección podrá crear, modificar y eliminar observaciones del proyecto @proyecto.Item2</p><hr />
 
-    if(observaciones.Count > 0)
+    using (Html.BeginForm("AccionOperacion", "Observacion", new { idProy = proyecto.Item1 }))
     {
-        <p>A continuación puede manejar las observaciones registradas hasta el momento</p>
-        <ul>
-            @{ 
-                foreach(Tuple<int, String> observacion in observaciones)
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <label class="input-group-text" for="select_operaciones">Operacion</label>
+            </div>
+            <select id="select_operaciones" class="custom-select" name="operacion">
+                @if(operacionSel == -1)
                 {
-                    var onClickS = "mostrarAccionesObs('" + observacion.Item1 + "')";
-                    var liId = "Lista" + observacion.Item1;
-                    <li>
-                        @Html.ActionLink(observacion.Item2, "Modificar", "Observacion",
-                         new { idObservacion = observacion.Item1, idProyecto = proyecto.Item1 }, null)
-                        <button class="closebtn">
-                            @Html.ActionLink("Eliminar", "Eliminar", "Observacion",
-                            new { idObservacion = observacion.Item1, idProyecto = proyecto.Item1 }, null)
-                        </button>
-                        <button onclick=@onClickS>Acciones Disponibles</button>
-                        <ul id=@liId  class="ListaAcciones">
-                            <li>@Html.ActionLink("Control de Rondas de Observación", "Index",
-                               "Ronda", new { idObservacion = observacion.Item1 }, null)</li>
-                            <li>@Html.ActionLink("Control de Observaciones de Tareas", "Index",
-                               "ObservacionTarea", new { idObservacion = observacion.Item1 }, null)</li>
-                        </ul>
-                    </li>
+                    <option selected>Escoja una opción</option>
                 }
-            }
-        </ul>
-    }
-    else
-    {
-        <p>No hay observaciones registradas hasta el momento</p><br />
+                @foreach (Tuple<int, String> operacion in operaciones)
+                {
+                    if(operacionSel == operacion.Item1)
+                    {
+                        <option value=@operacion.Item1 selected>@operacion.Item2</option>
+                    }
+                    else
+                    {
+                        <option value=@operacion.Item1>@operacion.Item2</option>
+                    }
+                }
+            </select>
+            <div class="input-group-append">
+                <input type="submit" class="btn btn-outline-primary" name="accion" value="Cargar" />
+            </div>
+        </div>
     }
 
-    <p>Para crear una observación nueva, haga click sobre el botón:</p><br />
-    <button>@Html.ActionLink("Crear Observación", "Crear", "Observacion", new { idProyecto = proyecto.Item1 }, null)</button>
+    if(operacionSel != -1)
+    {
+        using(Html.BeginForm("AccionObservaciones", "Observacion",
+            new { idProy = proyecto.Item1 , idOp = operacionSel,  })) {
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="select_observaciones">Observacion</label>
+                </div>
+                <select id="select_observaciones" class="custom-select" name="observacion">
+                    @{ 
+                        if(observacionSel == -1) {
+                            <option selected>Escoja una opcion</option>
+                        }
+                        if(observaciones != null)
+                        {
+                            foreach(Tuple<int, String> observacionT in observaciones)
+                            {
+                                if(observacionSel == observacionT.Item1)
+                                {
+                                    <option value=@observacionT.Item1 selected>@observacionT.Item2</option>
+                                }
+                                else
+                                {
+                                    <option value=@observacionT.Item1>@observacionT.Item2</option>
+                                }
+                            }
+                        }
+                    }
+                </select>
+                <div class="input-group-append">
+                    <div class="btn-group" role="group">
+                        <input type="submit" class="btn btn-outline-primary" name="accion" value="Cargar" />
+                        <input type="submit" class="btn btn-outline-secondary" name="accion" value="Modificar" />
+                        <input type="submit" class="btn btn-outline-danger" name="accion" value="Eliminar" />
+                        <input type="submit" class="btn btn-outline-success" name="accion" value="Agregar" />
+                    </div>
+                </div>
+            </div>
+
+        }
+    }
+
+    if(observacionSel != -1){
+        <div class="input-group">
+            <div class="input-group-append">
+                <span class="input-group-text">Status del muestreo</span>
+            </div>
+            <input class="form-control" type="text" value=@status readonly>
+        </div> <br />
+        <div>
+            <h2 class="h2">Resumen de observaciones de Tarea para este día</h2><br />
+            <table class="table">
+                
+                <thead class="thead-dark">
+                    <tr>
+                        @for(int i= -1; i < colaboradores.Count; i++)
+                        {
+                            if(i == -1)
+                            {
+                                <th></th>
+                            }
+                            else
+                            {
+                                <th>@colaboradores[i].Item2</th>
+                            }
+                        }
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @for(int i = 0; i < tareas.Count; i++)
+                    {
+                        <tr>
+                            @for(int j = -1; j < colaboradores.Count; j++)
+                            {
+                                if(j == -1)
+                                {
+                                    <td class="table-dark text-white">
+                                        @tareas[i].Item2
+                                    </td>
+                                }
+                                else
+                                {
+                                    var cant = 0;
+                                    var idSujeto = colaboradores[j].Item1;
+                                    var idTarea = tareas[i].Item1;
+
+                                    foreach (Dictionary<String, dynamic> observacionTarea in obsTareas)
+                                    {
+                                        if (observacionTarea["id_tarea"] == idTarea &&
+                                            observacionTarea["id_sujeto"] == idSujeto)
+                                        {
+                                            cant++;
+                                        }
+                                    }
+
+                                    <td>@cant</td>
+                                }
+                            }
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+        </div>
+    }
 }
