@@ -3,12 +3,13 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title Sistema de Monitoreo</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/codigo")
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 </head>
 
 <body>
@@ -25,9 +26,7 @@
         </div>
         <a>@Html.ActionLink("Crear Proyecto", "Crear", "Proyecto")</a>
         <a>@Html.ActionLink("Manejo de Proyectos Existentes", "Index", "Proyecto")</a>
-        <a>@Html.ActionLink("Acerca de", "About", "Home")</a>
-        <a>@Html.ActionLink("Ayuda", "Help", "Home")</a>
-        <a>@Html.ActionLink("Contacto", "Contact", "Home")</a>
+        <a>@Html.ActionLink("Ver Datos", "VerDatos", "Consolidado")</a>
     </div>
 
     <div id="main">
@@ -41,7 +40,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p>&copy; @DateTime.Now.Year - Sistema de Monitoreo</p>
         </footer>
     </div>
 

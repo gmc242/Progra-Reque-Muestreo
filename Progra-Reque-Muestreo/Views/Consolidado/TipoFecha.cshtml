@@ -1,0 +1,24 @@
+﻿@model Progra_Reque_Muestreo.Models.Consolidado
+<h2>Seleccione la Operación</h2>
+@{
+    var lista = ViewData["operaciones"] as List<string>;
+    if (lista != null)
+    {
+        using (Html.BeginForm(Html.BeginForm("DatosXFecha", "Consolidado", FormMethod.Post)))
+        //new { onSubmit = "interceptSubmitConsolidado()" })))
+        {
+            <nav>
+                @{
+                    foreach (string operacion in lista)
+                    {
+
+
+                        <button type="submit" class="nav-tabs-justified" name="operacion" , value=@operacion>
+                            @operacion
+                        </button>
+                    }
+                }
+            </nav>
+        }
+    }
+}
