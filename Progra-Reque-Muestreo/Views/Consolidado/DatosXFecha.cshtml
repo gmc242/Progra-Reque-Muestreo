@@ -1,39 +1,77 @@
 ﻿
-<h2>@ViewBag.Titulo</h2>
-<table class="table-bordered">
-    <tr>
-        <th style="text-align:center;">Clasificación</th>
-        <th style="text-align:center;">Tarea</th>
-    </tr>
-    <tr>
-        <td style="text-align:center;">TC</td>
-        <td style="text-align:center;">Colado Panel</td>
-        <td style="text-align:center;">9</td>
-    </tr>
-    <tr>
-        <td style="text-align:center;">TC</td>
-        <td style="text-align:center;">Colado Otro</td>
-        <td style="text-align:center;">2</td>
-    </tr>
-</table>
-<div class="jumbotron">
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript">
-        google.charts.load('current', { 'packages': ['corechart'] });
-        google.charts.setOnLoadCallback(drawChart);
+<h1>@ViewBag.Titulo</h1>
+@{
+    var listatareas = ViewData["ResultadoTareas"] as List<Tuple<string, string, string>>;
+    var listaHHT = ViewData["HHT"] as List<Tuple<string, string, string>>;
+    var n = ViewData["n"];
+    var p = ViewData["p"];
+    var q = ViewData["q"];
+    var hum = ViewData["humedad"];
+    var tem = ViewData["temperatura"];
+    var tp = ViewData["TP"];
+    <div class="jumbotron">
+        <div class="row">
+            <div class="col-md-4">
+                <h2>Horas</h2>
+                @{
+                    foreach (Tuple<string, string, string> tupla in listaHHT)
+                    {
+                        <p>@tupla.Item1</p>
+                    }
+                }
+            </div>
+            <div class="col-md-4">
+                <h2>Humedad</h2>
+                @{
+                    foreach (Tuple<string, string, string> tupla in listaHHT)
+                    {
+                        <p>@tupla.Item2</p>
+                    }
+                }
+                <a>Humedad Promedio: @hum</a>
+            </div>
+            <div class="col-md-4">
+                <h2>Temperatura</h2>
+                @{
+                    foreach (Tuple<string, string, string> tupla in listaHHT)
+                    {
+                        <p>@tupla.Item3</p>
+                    }
+                }
+                <a>Temperatura Promedio: @tem</a>
+            </div>
+            <div class="col-md-4">
+                <h2>Productividad</h2>
+                <p>Suma de TP= @tp</p>
+                <p>n=@n</p>
+                <p>p= @p</p>
+                <p>q= @q</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="jumbotron">
+        <h2>Tabla de Datos</h2>
+        <table class="table-bordered">
+            <tr>
+                <th style="text-align:center;">Clasificación</th>
+                <th style="text-align:center;">Tarea</th>
+                <th style="text-align:center;">Colaborador</th>
+            </tr>
+            @{
+                foreach (Tuple<string, string, string> tupla in listatareas)
+                {
+                    <tr>
+                        <td style="text-align:center;">@tupla.Item1</td>
+                        <td style="text-align:center;">@tupla.Item2</td>
+                        <td style="text-align:center;">@tupla.Item3</td>
+                    </tr>
+                }
+            }
+        </table>
+    </div>
+        
+
+}
 
 
-        function drawChart() {
-
-            var data = google.visualization.arrayToDataTable([['Tarea', 'Observaciones'], ['Productivas', 91], ['Contributivas', 46], ['Improductivas', 73],]);
-
-            var options = {
-                title: 'Porcentaje para cada tipo de Tarea'
-            };
-
-            var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-            chart.draw(data, options);
-        }
-    </script>
-    <div id="piechart" style="width:800px;height:200px;"></div>
-</div>
