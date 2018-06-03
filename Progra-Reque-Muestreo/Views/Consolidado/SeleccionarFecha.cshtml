@@ -1,0 +1,25 @@
+﻿@model Progra_Reque_Muestreo.Models.Consolidado
+<h2>@ViewBag.Titulo</h2>
+@{
+    var lista = ViewData["Fechas"] as List<string>;
+    if (lista != null)
+    {
+        using (Html.BeginForm(Html.BeginForm("DatosXFecha", "Consolidado", FormMethod.Post)))
+        //new { onSubmit = "interceptSubmitConsolidado()" })))
+        {
+            <nav>
+                @{
+                    foreach (string fecha in lista)
+                    {
+
+
+                        <button type="submit" class="nav-tabs-justified" name="fecha" , value=@fecha>
+                            @fecha
+                        </button>
+                    }
+                }
+            </nav>
+        }
+    }
+}
+
