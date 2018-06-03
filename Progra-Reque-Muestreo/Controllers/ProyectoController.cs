@@ -28,7 +28,7 @@ namespace Progra_Reque_Muestreo.Controllers
         // GET: Proyecto/Crear
         public ActionResult Crear()
         {
-            if (DatosUsuarios.revisarCredenciales("admin"))
+            if (DatosUsuarios.VerificarCredencialesAdmin())
             {
                 var usuarios = DatosUsuarios.getUsuariosString();
                 ViewData["usuarios"] = usuarios;
@@ -85,14 +85,14 @@ namespace Progra_Reque_Muestreo.Controllers
                 var dic = DatosProyecto.GetProyecto(id);
                 if (dic.ContainsKey("nombre"))
                 {
-                    if(DatosUsuarios.revisarCredenciales("admin") ||
-                        DatosUsuarios.revisarCredenciales(dic["lider_id"]))
+                    if(DatosUsuarios.VerificarCredencialesAdmin() ||
+                        DatosUsuarios.VerificarCredencialesLider(id))
                     {
                         ViewData["proyecto"] = dic;
                         var usuarios = DatosUsuarios.getUsuariosString();
                         ViewData["usuarios"] = usuarios;
                         ViewData["id"] = id;
-                        return View();
+                        return View("Modificar");
                     }
                     else
                     {
@@ -258,16 +258,20 @@ namespace Progra_Reque_Muestreo.Controllers
                 {
                     case "Administrar":
                         {
-                            if (collection.AllKeys.Contains("operaciones"))
+                            if (collection.AllKeys.Contains("observaciones"))
                             {
-                                var lista = Array.ConvertAll(collection["operaciones"].Split(','), int.Parse);
+                                var lista = Array.ConvertAll(collection["observaciones"].Split(','), int.Parse);
                                 if(lista.Length > 1)
                                 {
                                     throw new Exception("Solo puede administrar una observación al mismo tiempo");
                                 }
                                 else
                                 {
-                                    return RedirectToAction("Detalles", "Observacion", new { id = lista[0] });
+                                    var obs = lista[0];
+                                    var dic = DatosObservacion.GetObservacion(obs);
+
+                                    return RedirectToAction("Detalles", "Observacion", 
+                                        new { idProy = id, idOp = dic["id_actividad"], idObs = obs });
                                 }
                             }
                             else
@@ -364,7 +368,8 @@ namespace Progra_Reque_Muestreo.Controllers
         {
             try
             {
-                if (DatosUsuarios.revisarCredenciales("admin"))
+                if (DatosUsuarios.VerificarCredencialesLider(int.Parse(idProy)) || 
+                    DatosUsuarios.VerificarCredencialesAdmin())
                 {
                     // Parsing de datos de la forma HTML
                     String nombre = collection["nombre"];

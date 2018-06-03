@@ -15,11 +15,105 @@ namespace Progra_Reque_Muestreo.Controllers
         // GET: Observación
         public ActionResult Index(int idProyecto)
         {
-            var lista = DatosObservacion.GetObservacionesPorProyecto(idProyecto);
-            ViewData["observaciones"] = lista;
+            var lista = DatosActividad.getActividades(idProyecto);
+            ViewData["operaciones"] = lista;
             var dic = DatosProyecto.GetProyecto(idProyecto);
             ViewData["proyecto"] = new Tuple<int, String>(idProyecto, dic["nombre"]);
-            return View();
+            return View("Index");
+        }
+
+        [HttpPost]
+        public ActionResult AccionOperacion(int idProy, FormCollection collection)
+        {
+            try
+            {
+                var operacion = int.Parse(collection["operacion"]);
+                var obs = DatosObservacion.GetObservacionesPorActividad(operacion);
+                ViewData["operacion_sel"] = operacion;
+                ViewData["observaciones"] = obs;
+                return Index(idProy);
+            }
+            catch (Exception e)
+            {
+                ViewData["exception"] = e;
+                return View("Error");
+            }
+        }
+
+        [HttpPost]
+        public ActionResult AccionObservaciones(int idProy, int idOp, FormCollection collection)
+        {
+            try
+            {
+                var accion = collection["accion"];
+                switch (accion)
+                {
+                    case "Cargar":
+                        {
+                            var idObs = int.Parse(collection["observacion"]);
+                            return Detalles(idProy, idOp, idObs);
+                        }
+                    case "Agregar":
+                        {
+                            return Crear(idProy);
+                        }
+                    case "Eliminar":
+                        {
+                            var idObs = int.Parse(collection["observacion"]);
+                            DatosObservacion.Eliminar(idObs);
+                            ViewData["operacion_sel"] = idOp;
+                            var observaciones = DatosObservacion.GetObservacionesPorActividad(idOp);
+                            ViewData["observaciones"] = observaciones;
+                            return Index(idProy);
+                        }
+                    case "Modificar":
+                        {
+                            var idObs = int.Parse(collection["observacion"]);
+                            return Modificar(idObs, idProy);
+                        }
+                    default:
+                        {
+                            return Index(idProy);
+                        }
+                    
+                }
+                
+            }
+            catch(Exception e)
+            {
+                ViewData["exception"] = e;
+                return View("Error");
+            }
+        }
+
+        public ActionResult Detalles(int idProy, int idOp, int idObs)
+        {
+            try
+            {
+                // Primeros datos
+                var obsLista = DatosObservacion.GetObservacionesPorActividad(idOp);
+                ViewData["operacion_sel"] = idOp;
+                ViewData["observaciones"] = obsLista;
+
+                //Parsea observacion seleccionada
+                var obs = DatosObservacion.GetObservacion(idObs);
+                ViewData["observacion_sel"] = idObs;
+                ViewData["observacion"] = obs;
+
+                var obsTarea = DatosObservacionTarea.GetObservacionTareaPorObservacion(idObs);
+                ViewData["obs_tarea"] = obsTarea;
+
+                ViewData["status"] = ControladorGlobal.ObtenerStatusCantidadString(idOp, idProy);
+                ViewData["colaboradores"] = DatosSujeto.GetSujetosDeProyecto(idProy);
+                ViewData["tareas"] = DatosTarea.getTareasDeActividad(idOp);
+
+                return Index(idProy);
+            }
+            catch(Exception e)
+            {
+                ViewData["exception"] = e;
+                return View("Error");
+            }
         }
 
         // GET: Observación/Crear
@@ -30,7 +124,7 @@ namespace Progra_Reque_Muestreo.Controllers
             ViewData["actividades"] = listaActividades;
             var dic = DatosProyecto.GetProyecto(idProyecto);
             ViewData["proyecto"] = new Tuple<int, String>(idProyecto, dic["nombre"]);
-            return View();
+            return View("Crear");
         }
 
         // POST: Observación/Create
@@ -68,7 +162,7 @@ namespace Progra_Reque_Muestreo.Controllers
                 ViewData["proyecto"] = new Tuple<int, String>(idProyecto, dic["nombre"]);
                 ViewData["observacion"] = DatosObservacion.GetObservacion(idObservacion);
 
-                return View();
+                return View("Modificar");
             }
             catch(Exception e)
             {

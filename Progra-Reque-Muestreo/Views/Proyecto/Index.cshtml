@@ -2,7 +2,7 @@
     ViewBag.Title = "Proyecto";
 }
 
-<h2>Administración de Proyectos</h2>
+<h2>Administración de Proyectos</h2><hr />
 @{
     var lista = ViewData["lista_proyectos"] as List<Tuple<int, String>>;
     if (lista != null)
@@ -12,21 +12,21 @@
         using (Html.BeginForm(Html.BeginForm("Info", "Proyecto", FormMethod.Post, 
             new { onSubmit = "interceptSubmitProyecto()"})))
         {
-            <nav>
-                @{
-                    foreach (Tuple<int, String> proyecto in lista)
+            <div class="btn-group-lg">
+                @{ 
+                    foreach(Tuple<int,String> proyecto in lista)
                     {
-                        
-                        <button type="submit" class="nav-tabs-justified" name="proyecto", value=@proyecto.Item1>
+                        <button class="btn btn-outline-dark" type="submit" name="proyecto" value=@proyecto.Item1>
                             @proyecto.Item2
                         </button>
                     }
                 }
-            </nav>
+            </div><hr />
         }
 
         // Crea la vista por proyecto que contiene valores básicos y botones de navegación
-        <div class="container" id="contenedorProyecto">
+
+        <div class="container-fluid" id="contenedorProyecto">
     @{
         if (ViewData.Keys.Contains("proyecto_abierto"))
         {
@@ -34,26 +34,29 @@
             using (Html.BeginForm("AccionColaboradores", "Proyecto", new { id = proyecto["id_proyecto"] }))
             {
                 <br>
-                <div class="row">
-                    <div class="col-md-3">
-                        Trabajadores del proyecto<br>
-                        <select multiple="multiple" name="colaboradores">
+                <div class="row align-items-center">
+                    <div class="col-auto">
+                        <span class="input-group-text">Colaboradores</span>
+                        <select class="form-control" multiple="multiple" name="colaboradores">
                             @foreach (Tuple<int, String> colaborador in proyecto["colaboradores"] as List<Tuple<int, String>>)
-                             {
+                            {
                                 <option value=@colaborador.Item1>@colaborador.Item2</option>
-                             }
+                            }
                         </select>
                     </div>
-                    <div class="col-md-3">
-                        Nombre<br>
-                        <input type="text" name="nombreColaborador"><br>
-                        Dato extra <br>
-                        <input type="text" name="dato">
+                    <div class="col-auto">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Nombre</span>
+                            </div>
+                            <input class="form-control" type="text" name="nombreColaborador"><br>
+                        </div>
                     </div>
-                    <div class="col-md-3">
-                        <br />
-                        <input class="btn-group-spacing" type="submit" name="accion" value="Agregar" /> <br /> <br />
-                        <input class="btn-group-spacing" type="submit" name="accion" value="Borrar">
+                    <div class="col-auto align-items-center">
+                        <div class="btn-group-vertical" role="group">
+                            <input class="btn btn-outline-dark" type="submit" name="accion" value="Agregar" />
+                            <input class="btn btn-outline-dark" type="submit" name="accion" value="Borrar">
+                        </div>
                     </div>
                 </div>
 
@@ -61,31 +64,33 @@
             <hr />
             using (Html.BeginForm("AccionOperaciones", "Proyecto", new { id = proyecto["id_proyecto"]}))
             {
-                <div class="row">
-                    <div class="col-md-3">
-                        Operacion
-                        <select name="operacion">
-                            @foreach(Tuple<int, String> operacion in proyecto["operaciones"] as List<Tuple<int, String>>){
-                                <option value=@operacion.Item1> @operacion.Item2 </option>
-                            }
-                        </select>
+                <div class="input-group mb3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Operacion</span>
                     </div>
-                    <div class="col-md-5">
-                        <input class="btn-group-spacing" type="submit" name="accion" value="Cargar" />
-                        <input class="btn-group-spacing" type="submit" name="accion" value="Modificar" />
-                        <input class="btn-group-spacing" type="submit" name="accion" value="Eliminar" />
-                        <input class="btn-group-spacing" type="submit" name="accion" value="Agregar" />
-                        <input class="btn-group-spacing" type="submit" name="accion" value="Consolidado" />
+                    <select class="custom-select" name="operacion">
+                        @foreach(Tuple<int, String> operacion in proyecto["operaciones"] as List<Tuple<int, String>>){
+                            <option value=@operacion.Item1> @operacion.Item2 </option>
+                        }
+                    </select>
+                    <div class="input-group-append">
+                        <div class="btn-group">
+                            <input class="btn btn-outline-primary" type="submit" name="accion" value="Cargar" />
+                            <input class="btn btn-outline-primary" type="submit" name="accion" value="Modificar" />
+                            <input class="btn btn-outline-primary" type="submit" name="accion" value="Eliminar" />
+                            <input class="btn btn-outline-primary" type="submit" name="accion" value="Agregar" />
+                            <input class="btn btn-outline-primary" type="submit" name="accion" value="Consolidado" />
+                        </div>
                     </div>
                 </div>
             }
             <hr />
             using (Html.BeginForm("AccionObservaciones", "Proyecto", new { id = proyecto["id_proyecto"] }))
             {
-                <div class="row">
-                    <div class="col-md-5">
-                        Observaciones para la operación <br />
-                        <select multiple="multiple" name="observaciones">
+                <div class="row align-items-center">
+                    <div class="col-auto">
+                        <span class="input-group-text">Observaciones para la operación</span>
+                        <select class="form-control" multiple="multiple" name="observaciones">
                             @if (ViewData.Keys.Contains("observaciones"))
                             {
                                 foreach(Tuple<int, String> observacion in ViewData["observaciones"] as List<Tuple<int, String>>)
@@ -97,11 +102,12 @@
                             }
                         </select>
                     </div>
-                    <div class="col-md-4">
-                        <br /><br />
-                        <input class="btn-group-spacing" type="submit" name="accion" value="Administrar" /> 
-                        <input class="btn-group-spacing" type="submit" name="accion" value="Eliminar" /> 
-                        <input class="btn-group-spacing" type="submit" name="accion" value="Agregar" />
+                    <div class="col-auto">
+                        <div class="btn-group-vertical">
+                            <input class="btn btn-outline-dark" type="submit" name="accion" value="Administrar" />
+                            <input class="btn btn-outline-dark" type="submit" name="accion" value="Eliminar" />
+                            <input class="btn btn-outline-dark" type="submit" name="accion" value="Agregar" />
+                        </div>
                     </div>
                 </div>
             }
@@ -109,49 +115,34 @@
 
             using(Html.BeginForm("AccionProyecto", "Proyecto", new { id = proyecto["id_proyecto"] }))
             {
-                <div class="row btn-group-lg">
-                    <input class="btn-group-spacing" type="submit" name="accion" value="Consolidados y Gráficos"/> 
-                    <input class="btn-group-spacing" type="submit" name="accion" value="Informe General"/> 
-                    <input class="btn-group-spacing" type="submit" name="accion" value="Informe por Recorridos"/> 
-                </div>
-                <br />
-                <div class="row btn-group-lg">
-                    <input class="btn-group-spacing" type="submit" name="accion" value="Modificar Proyecto"/> 
-                    <input class="btn-group-spacing" type="submit" name="accion" value="Tipo de muestreo y cálculos"/> 
-                    <input class="btn-group-spacing" type="submit" name="accion" value="Finalizar Proyecto"/>
+                <div class="align-items-center">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <div class="btn-group-vertical">
+                                <input class="btn btn-outline-primary" type="submit" name="accion" value="Consolidados y Gráficos" />
+                                <input class="btn btn-outline-primary" type="submit" name="accion" value="Modificar Proyecto" />
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="btn-group-vertical">
+                                <input class="btn btn-outline-primary" type="submit" name="accion" value="Informe General" />
+                                <input class="btn btn-outline-primary" type="submit" name="accion" value="Informe por Recorridos" />
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="btn-group-vertical">
+                                <input class="btn btn-outline-primary" type="submit" name="accion" value="Tipo de muestreo y cálculos" />
+                                <input class="btn btn-outline-primary" type="submit" name="accion" value="Finalizar Proyecto" />
+                            </div>
+                        </div>
+                    </div>
                 </div>
             }
 
         }
     }
-        
-        
-        
+         
         </div>
     }
 
-    /*if (lista != null)
-    {
-        <ul>
-            @{
-                foreach(Tuple<int,String> proyecto in lista)
-                {
-                    var onClickS = "mostrarAccionesProyecto('" + proyecto.Item1 + "')";
-                    var listaId = "ListaProyecto" + proyecto.Item1;
-                    <li>
-                        <span>
-                            @Html.ActionLink(proyecto.Item2, "Modificar", new { id = proyecto.Item1 })
-                            <button onclick=@onClickS>Mostrar Acciones Disponibles</button>
-                        </span>
-                    </li>
-                    <br>
-                    <ul id=@listaId class="ListaSubProyecto">
-                        <li class="li_ListaSubProyecto">@Html.ActionLink("Manejo de Actividades", "Index", "Actividad", new { idProyecto = proyecto.Item1 }, null)</li>
-                        <li class="li_ListaSubProyecto">@Html.ActionLink("Manejo de Observaciones", "Index", "Observacion", new { idProyecto = proyecto.Item1 }, null)</li>
-                        <li class="li_ListaSubProyecto">@Html.ActionLink("Manejo de Sujetos de Observación", "Index", "Sujeto", new { idProyecto = proyecto.Item1 }, null)</li>
-                    </ul>
-                }
-            }
-        </ul>
-    }*/
 }

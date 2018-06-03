@@ -6,6 +6,22 @@
         <input type="text" name="nombre" value=@ViewData["nombre"].ToString()><br>
         Identificador de Usuario (20 caracteres máximo)
         <input type="hidden" name="idOld" value=@ViewData["id"]>
+        <fieldset>
+            <legend>Tipo de Usuario</legend>
+            @{ 
+                var administrador = bool.Parse(ViewData["tipo"].ToString());
+                if (administrador)
+                {
+                    <input type="radio" name="tipo" value="administrador" checked="checked"/>
+                    <input type="radio" name="tipo" value="analista" />
+                }
+                else
+                {
+                    <input type="radio" name="tipo" value="administrador" />
+                    <input type="radio" name="tipo" value="analista" checked="checked"/>
+                }
+            }
+        </fieldset><br />
         <input type="text" name="id" value=@ViewData["id"].ToString()><br>
         Password
         <input type="password" name="pass"><br>
