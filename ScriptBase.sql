@@ -1,3 +1,9 @@
+	create proc getOperaciones
+	as
+	begin 
+	select nombre from actividad
+	end
+
 create proc getOperaciones
 	as
 	begin 
@@ -13,18 +19,17 @@ create proc getOperaciones
 	descripcion varchar(200),
 	primary key(id_ronda),
 	foreign key(id_observacion) references observacion
-);
+	);
 
-create proc getTareasXoperacion 
+	create proc getTareasXoperacion 
 	@fecha date,
 	@nombreOperacion varchar(20)
 	as 
 	begin
 	declare @idOperacion int
-	select @idOperacion = id_actividad from actividad a where a.nombre = @nombreOperacion
-	
-	select t.categoria as 'Categoria', t.nombre as 'Nombre'
-	from tarea t
+	select @idOperacion = id_actividad from actividad a where a.nombre = @nombreOperacion	
+	select t.categoria as 'Categoria', t.nombre as 'Nombre', s.nombre as 'Colaborador', r.hora as 'Hora', r.humedad as 'Humedad', r.temperatura as 'Temperatura'
+	from tarea t, sujetos_de_prueba s
 	inner join observacion o
 	on o.id_actividad = @idOperacion and o.dia = @fecha
 	inner join ronda_de_observacion r
@@ -32,13 +37,32 @@ create proc getTareasXoperacion
 	inner join observacion_de_tarea ot
 	on ot.id_ronda = r.id_ronda
 	where ot.id_tarea = t.id_tarea
+	and ot.id_sujeto = s.id_sujeto
+	end
+
+	create proc getFechas 
+	@nombreOperacion varchar(20)
+	as 
+	begin
+	declare @idOperacion int
+	select @idOperacion = id_actividad from actividad a where a.nombre = @nombreOperacion	
+	select o.dia
+	from observacion o
+	inner join actividad a
+	on o.id_actividad = @idOperacion
+	group by o.dia
 	end
 
 	insert into usuario values ('1','Bryan',1,1,1)
+	select* from usuario
+
 	insert into proyecto values('proyEjem',2,30,4,GETDATE(),GETDATE(),'1','ProyectoEjamplo','MP')
+	select* from proyecto
+	
 
 	insert into actividad values ('Encofrado', 'Desc11',1)
 	insert into actividad values ('Operacion2', 'Desc22',1)
+	select* from actividad
 	
 
 	insert into sujetos_de_prueba values('SujetoEj1',1)
@@ -53,12 +77,12 @@ create proc getTareasXoperacion
 	insert into tarea values('TareaEjemplo4','dt4','TP')
 	insert into tarea values('TareaEjemplo5','dt5','TI')
 	insert into tarea values('TareaEjemplo6','dt6','TI')
-	insert into tarea values('TareaEjemplo7','dt7','TC')
-	insert into tarea values('TareaEjemplo8','dt8','TC')
+	insert into tarea values('TareaEjemplo7','dt7','TI')
+	insert into tarea values('TareaEjemplo8','dt8','TI')
 	insert into tarea values('TareaEjemplo9','dt9','TC')
 	insert into tarea values('TareaEjemplo10','dt10','TC')
-	insert into tarea values('TareaEjemplo11','dt11','TI')
-	insert into tarea values('TareaEjemplo12','dt12','TI')
+	insert into tarea values('TareaEjemplo11','dt11','TC')
+	insert into tarea values('TareaEjemplo12','dt12','TC')
 	
 
 	insert into observacion values(1,GETDATE(),'O1A1')
