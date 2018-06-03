@@ -266,7 +266,7 @@ namespace Progra_Reque_Muestreo.Models
                 conn.Open();
 
                 var command = new SqlCommand
-                    ("INSERT INTO observacion_de_tarea(id_observacion, id_sujeto, id_tarea) " +
+                    ("INSERT INTO observacion_de_tarea(id_ronda, id_sujeto, id_tarea) " +
                     "OUTPUT Inserted.id_observacion_tarea VALUES(@id_ron, @id_s, @id_t)", conn);
 
                 var idRon = new SqlParameter("@id_ron", SqlDbType.Int, 0) { Value = idRonda };

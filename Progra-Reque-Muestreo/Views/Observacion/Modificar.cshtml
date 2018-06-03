@@ -2,29 +2,63 @@
     var proyecto = ViewData["proyecto"] as Tuple<int, String>;
     var actividades = ViewData["actividades"] as List<Tuple<int, String>>;
     var observacion = ViewData["observacion"] as Dictionary<String, dynamic>;
-    <h2>Modificar Observación</h2><br /><br />
-    using (Html.BeginForm(new { idObservacion = observacion["id_observacion"], idProyecto = proyecto.Item1 }))
+    var idOp = (int)ViewData["id_op"]; 
+
+    <h2 class="h2">Modificar Observación</h2><hr />
+
+    using (Html.BeginForm("Modificar", "Observacion",
+        new { idObservacion = observacion["id_observacion"], idOp = idOp, idProyecto = proyecto.Item1 }, FormMethod.Post, null))
     {
-        <span>Día de Observación</span><br />
-        <input type="date" name="dia" value=@observacion["dia"].ToString("yyyy-MM-dd")><br />
-        <span>Descripcion o comentario sobre la observación</span>
-        <textarea name="descripcion">@observacion["descripcion"]</textarea><br />
-        <span>Actividad a la que pertenece la observación</span><br />
-        <select name="actividad">
-            @foreach (Tuple<int, String> actividad in actividades)
-            {
-                if(observacion["id_actividad"] == actividad.Item1)
-                {
-                    <option selected="selected" value=@actividad.Item1>@actividad.Item2</option>
-                }
-                else
-                {
-                    <option value=@actividad.Item1>@actividad.Item2</option>
-                }
-            }
-        </select><br />
-        <input type="hidden" name="id_proyecto" value=@proyecto.Item1>
-        <input type="hidden" name="id_observacion" value=@observacion["id_observacion"]>
-        <input type="submit" value="Modificar Observación">
+        <div class="row">
+            <div class=input-group>
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Día de Observación</span>
+                </div>
+                <input type="date" name="dia" class="form-group" value=@observacion["dia"].ToString("yyyy-MM-dd")>
+            </div>
+        </div>
+
+        <hr />
+
+        <div class="row">
+            <div class=input-group>
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Descripcion</span>
+                </div>
+                <textarea class="form-control" name="descripcion">@observacion["descripcion"]</textarea>
+            </div>
+        </div>
+
+        <hr />
+
+        <div class="row">
+            <div class=input-group>
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Operacion</span>
+                </div>
+                <select name="actividad" class="custom-select">
+                    @foreach (Tuple<int, String> actividad in actividades)
+                    {
+                        if (observacion["id_actividad"] == actividad.Item1)
+                        {
+                            <option selected="selected" value=@actividad.Item1>@actividad.Item2</option>
+                        }
+                        else
+                        {
+                            <option value=@actividad.Item1>@actividad.Item2</option>
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+
+        <hr />
+
+        <div class="row">
+            <input type="hidden" name="id_proyecto" value=@proyecto.Item1>
+            <input type="hidden" name="id_observacion" value=@observacion["id_observacion"]>
+            <input type="submit" value="Modificar Observación">
+        </div>
+        
     }
 }

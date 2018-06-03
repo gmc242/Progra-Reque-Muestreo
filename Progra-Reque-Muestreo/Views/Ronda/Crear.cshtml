@@ -1,17 +1,59 @@
-﻿@{ 
+﻿@{
     var observacion = ViewData["observacion"] as Tuple<int, String>;
-    <h2>Crear Ronda de Observacion</h2><br /><br />
-    using (Html.BeginForm(new { idObservacion = observacion.Item1 }))
+    var idProy = (int)ViewData["id_proyecto"];
+    var idOp = (int)ViewData["id_op"];
+
+    <h2 class="h2">Crear Ronda de Observacion</h2><br /><br />
+    using (Html.BeginForm("Crear", "Ronda", new { idProy = idProy, idOp = idOp, idObservacion = observacion.Item1 }, FormMethod.Post, null))
     {
-        <span>Fecha y Hora de la Ronda: </span><br />
-        <input type="datetime-local" name="fecha_hora"><br />
-        <span>Humedad: </span><br />
-        <input type="number" step="0.01" name="humedad"><br />
-        <span>Temperatura: </span><br />
-        <input type="number" step="0.01" name="temperatura"><br />
-        <span>Descripción</span><br />
-        <textarea name="descripcion"></textarea><br />
-        <input type="hidden" name="id_observacion" value=@observacion.Item1>
-        <input type="submit" value="Crear Ronda">
+        <div class="row">
+            <div class="col-auto">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Hora del Recorrido: </span>
+                    </div>
+                    <input type="time" name="fecha_hora">
+                </div>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+
+                    </div>
+                </div>
+            </div>
+        </div><hr />
+        <div class="row">
+            <div class="col-auto">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Humedad</span>
+                    </div>
+                    <input type="number" name="humedad" step="0.01" >
+                </div>
+            </div>
+            <div class="col-auto">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Temperatura</span>
+                    </div>
+                    <input type="number" name="temperatura" step="0.01" >
+                </div>
+            </div>
+        </div><hr />
+        <div class="row">
+            <div class="col-auto">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Descripcion</span>
+                    </div>
+                </div>
+                <textarea name="descripcion"></textarea>
+            </div>
+        </div><hr />
+        <div class="row">
+            <div class="col-auto">
+                <input type="hidden" name="id_observacion" value=@observacion.Item1>
+                <input type="submit" class="btn btn-primary" value="Crear Ronda">
+            </div>
+        </div>
     }
 }

@@ -55,7 +55,7 @@ namespace Progra_Reque_Muestreo.Controllers
                         }
                     case "Agregar":
                         {
-                            return Crear(idProy);
+                            return Crear(idProy, idOp);
                         }
                     case "Eliminar":
                         {
@@ -69,7 +69,7 @@ namespace Progra_Reque_Muestreo.Controllers
                     case "Modificar":
                         {
                             var idObs = int.Parse(collection["observacion"]);
-                            return Modificar(idObs, idProy);
+                            return Modificar(idObs, idOp, idProy);
                         }
                     default:
                         {
@@ -106,6 +106,7 @@ namespace Progra_Reque_Muestreo.Controllers
                 ViewData["status"] = ControladorGlobal.ObtenerStatusCantidadString(idOp, idProy);
                 ViewData["colaboradores"] = DatosSujeto.GetSujetosDeProyecto(idProy);
                 ViewData["tareas"] = DatosTarea.getTareasDeActividad(idOp);
+                ViewData["recorridos"] = DatosRonda.GetRondasDeObservacion(idObs);
 
                 return Index(idProy);
             }
@@ -116,20 +117,36 @@ namespace Progra_Reque_Muestreo.Controllers
             }
         }
 
+        [HttpPost]
+        public ActionResult AccionRecorrido(int idProy, int idOp, int idObs, FormCollection collection)
+        {
+            try
+            {
+                var recorrido = int.Parse(collection["recorrido"]);
+                return RedirectToAction("Detalles", "Ronda",
+                    new { idProy = idProy, idOp = idOp, idObs = idObs, idRonda = recorrido });
+            }catch(Exception e)
+            {
+                ViewData["exception"] = e;
+                return View("Error");
+            }
+        }
+
         // GET: Observación/Crear
         [Route("Crear")]
-        public ActionResult Crear(int idProyecto)
+        public ActionResult Crear(int idProyecto, int idOp)
         {
             var listaActividades = DatosActividad.getActividades(idProyecto);
             ViewData["actividades"] = listaActividades;
             var dic = DatosProyecto.GetProyecto(idProyecto);
             ViewData["proyecto"] = new Tuple<int, String>(idProyecto, dic["nombre"]);
+            ViewData["id_op"] = idOp;
             return View("Crear");
         }
 
         // POST: Observación/Create
         [HttpPost] [Route("Crear")]
-        public ActionResult Crear(int idProyecto, FormCollection collection)
+        public ActionResult Crear(int idProyecto, int idOp, FormCollection collection)
         {
             try
             {
@@ -137,11 +154,11 @@ namespace Progra_Reque_Muestreo.Controllers
                 var idActividad = int.Parse(collection["actividad"]);
                 var dia = DateTime.Parse(collection["dia"]);
 
-                DatosObservacion.Crear(idActividad, descripcion, dia);
+                var res = DatosObservacion.Crear(idActividad, descripcion, dia);
 
-                return RedirectToAction("Index", new { idProyecto });
+                return Detalles(idProyecto, idOp, res);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 ViewData["exception"] = e;
                 return View("Error");
@@ -150,7 +167,7 @@ namespace Progra_Reque_Muestreo.Controllers
 
         // GET: Observación/Modificar/5
         [Route("Modificar")]
-        public ActionResult Modificar(int idObservacion, int idProyecto)
+        public ActionResult Modificar(int idObservacion, int idOp, int idProyecto)
         {
             try
             {
@@ -161,6 +178,8 @@ namespace Progra_Reque_Muestreo.Controllers
 
                 ViewData["proyecto"] = new Tuple<int, String>(idProyecto, dic["nombre"]);
                 ViewData["observacion"] = DatosObservacion.GetObservacion(idObservacion);
+
+                ViewData["id_op"] = idOp;
 
                 return View("Modificar");
             }
@@ -173,7 +192,7 @@ namespace Progra_Reque_Muestreo.Controllers
 
         // POST: Observación/Edit/5
         [HttpPost, Route("Modificar")]
-        public ActionResult Modificar(int idObservacion, int idProyecto, FormCollection collection)
+        public ActionResult Modificar(int idObservacion, int idOp, int idProyecto, FormCollection collection)
         {
             try
             {
@@ -184,7 +203,7 @@ namespace Progra_Reque_Muestreo.Controllers
 
                 DatosObservacion.Modificar(idObs, idActividad, descripcion, dia);
 
-                return RedirectToAction("Index", new { idProyecto });
+                return Detalles(idProyecto, idOp, idProyecto);
             }
             catch(Exception e)
             {

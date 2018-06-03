@@ -1,10 +1,254 @@
-﻿@{ 
-    var observacion = ViewData["observacion"] as Tuple<int, String>;
-    var rondas = ViewData["rondas"] as List<Tuple<int, String>>;
+﻿@{
+    var proyecto = ViewData["proyecto"] as Tuple<int, String>;
+    var operaciones = ViewData["operaciones"] as List<Tuple<int, String>>;
+    var observaciones = ViewData["observaciones"] as List<Tuple<int, String>>;
+    var obsTareas = ViewData["obs_tarea"] as List<Dictionary<String, dynamic>>;
 
-    <h2>Control de Rondas de Observación</h2><br />
-    <p>En esta sección puede crear, modificar y eliminar rondas de observación de la observacion: observacion.Item2</p><br />
+    var operacionSel = -1;
+    if (ViewData.Keys.Contains("operacion_sel"))
+    {
+        operacionSel = (int)ViewData["operacion_sel"];
+    }
 
+    var observacionSel = -1;
+    if (ViewData.Keys.Contains("observacion_sel"))
+    {
+        observacionSel = (int)ViewData["observacion_sel"];
+    }
+
+    var recorridoSel = -1;
+    if (ViewData.Keys.Contains("recorrido_sel"))
+    {
+        recorridoSel = (int)ViewData["recorrido_sel"];
+    }
+
+    var colaboradores = ViewData["colaboradores"] as List<Tuple<int, String>>;
+    var tareas = ViewData["tareas"] as List<Tuple<int, String>>;
+    var recorridos = ViewData["recorridos"] as List<Tuple<int, String>>;
+    var recorrido = ViewData["recorrido"] as Dictionary<String, dynamic>;
+
+    <h2 class="h2">Control de Rondas de Observación</h2><br />
+    <p>En esta sección puede crear, modificar y eliminar rondas de observación de la observacion: observacion.Item2</p><hr />
+
+    using (Html.BeginForm("AccionOperaciones", "Ronda", new { idProy = proyecto.Item1 }))
+    {
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <label class="input-group-text" for="select_operaciones">Operacion</label>
+            </div>
+            <select id="select_operaciones" class="custom-select" name="operacion">
+                @if (operacionSel == -1)
+                {
+                    <option selected>Escoja una opción</option>
+                }
+                @foreach (Tuple<int, String> operacion in operaciones)
+                {
+                    if (operacionSel == operacion.Item1)
+                    {
+                        <option value=@operacion.Item1 selected>@operacion.Item2</option>
+                    }
+                    else
+                    {
+                        <option value=@operacion.Item1>@operacion.Item2</option>
+                    }
+                }
+            </select>
+            <div class="input-group-append">
+                <input type="submit" class="btn btn-outline-primary" name="accion" value="Cargar" />
+            </div>
+        </div>
+    }
+
+    if (operacionSel != -1)
+    {
+        using (Html.BeginForm("AccionObservacion", "Ronda", new { idProy = proyecto.Item1, idOp = operacionSel }))
+        {
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="select_observaciones">Observacion</label>
+                </div>
+                <select id="select_observaciones" class="custom-select" name="observacion">
+                    @{
+                        if (observacionSel == -1)
+                        {
+                            <option selected>Escoja una opcion</option>
+                        }
+                        if (observaciones != null)
+                        {
+                            foreach (Tuple<int, String> observacionT in observaciones)
+                            {
+                                if (observacionSel == observacionT.Item1)
+                                {
+                                    <option value=@observacionT.Item1 selected>@observacionT.Item2</option>
+                                }
+                                else
+                                {
+                                    <option value=@observacionT.Item1>@observacionT.Item2</option>
+                                }
+                            }
+                        }
+                    }
+                </select>
+                <div class="input-group-append">
+                    <input type="submit" class="btn btn-outline-primary" name="accion" value="Cargar" />
+                </div>
+            </div>
+        }
+    }
+
+    if (observacionSel != -1)
+    {
+        using (Html.BeginForm("AccionRecorrido", "Ronda",
+            new { idProy = proyecto.Item1, idOp = operacionSel, idObs = observacionSel }))
+        {
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Rondas</span>
+                </div>
+                <select class="custom-select" name="ronda">
+                    @foreach (Tuple<int, String> ronda in recorridos)
+                    {
+                        if (recorridoSel != -1 && ronda.Item1 == recorridoSel)
+                        {
+                            <option value=@ronda.Item1 selected="selected">@ronda.Item2</option>
+                        }
+                        else
+                        {
+                            <option value=@ronda.Item1>@ronda.Item2</option>
+                        }
+                    }
+                </select>
+                <div class="input-group-append">
+                    <div class="btn-group" role="group">
+                        <input type="submit" class="btn btn-outline-primary" name="accion" value="Cargar" />
+                        <input type="submit" class="btn btn-outline-secondary" name="accion" value="Modificar" />
+                        <input type="submit" class="btn btn-outline-danger" name="accion" value="Eliminar" />
+                        <input type="submit" class="btn btn-outline-success" name="accion" value="Agregar" />
+                    </div>
+                </div>
+            </div>
+        }
+    }
+
+    <hr />
+
+    if (recorridoSel != -1)
+    {
+        // Info general del recorrido
+        <div class="row">
+            <div class="col-auto">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Temperatura</span>
+                    </div>
+                    <input class="form-control" type="text" value=@recorrido["temperatura"] readonly />
+                </div><br />
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Humedad</span>
+                    </div>
+                    <input class="form-control" type="text" value=@recorrido["humedad"] readonly />
+                </div>
+            </div>
+            <div class="col-auto">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">
+                            Día
+                        </span>
+                    </div>
+                    @{
+                        var hora = (TimeSpan)recorrido["hora"];
+                    }
+                    <input type="time" class="form-control" value=@hora.ToString(@"hh\:mm") readonly />
+                </div>
+            </div>
+        </div>
+
+        <hr />
+
+        // Observaciones de tarea del recorrido
+        <div>
+            <h2 class="h2">Resumen de observaciones de Tarea para este día</h2><br />
+            <table class="table">
+
+                <thead class="thead-dark">
+                    <tr>
+                        @for (int i = -1; i < colaboradores.Count; i++)
+                        {
+                            if (i == -1)
+                            {
+                                <th></th>
+                            }
+                            else
+                            {
+                                <th>@colaboradores[i].Item2</th>
+                            }
+                        }
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @for (int i = 0; i < tareas.Count; i++)
+                    {
+                        <tr>
+                            @for (int j = -1; j < colaboradores.Count; j++)
+                            {
+                                if (j == -1)
+                                {
+                                    <td class="table-dark text-white">
+                                        @tareas[i].Item2
+                                    </td>
+                                }
+                                else
+                                {
+                                    var idSujeto = colaboradores[j].Item1;
+                                    var idTarea = tareas[i].Item1;
+                                    var encontrado = false;
+                                    int idObsTarea = 0;
+
+                                    foreach (Dictionary<String, dynamic> observacionTarea in obsTareas)
+                                    {
+                                        if (observacionTarea["id_tarea"] == idTarea &&
+                                            observacionTarea["id_sujeto"] == idSujeto)
+                                        {
+                                            idObsTarea = observacionTarea["id_observacion_tarea"];
+                                            encontrado = true;
+                                            break;
+                                        }
+                                    }
+
+                                    using (Html.BeginForm("AccionObservacionTarea", "Ronda",
+                                        new { idProy = proyecto.Item1, idOp = operacionSel, idObs = observacionSel, idRonda = recorridoSel }))
+                                    {
+                                        if (encontrado)
+                                        {
+                                            <td>
+                                                <input type="hidden" name="accion" value="Eliminar" />
+                                                <input type="hidden" name="valor" value=@idObsTarea />
+                                                <input type="checkbox" onchange="this.form.submit()"  checked />
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            var valor = idSujeto.ToString() + "," + idTarea.ToString();
+                                            <td>
+                                                <input type="checkbox" onchange="this.form.submit()" name="valor" value=@valor />
+                                                <input type="hidden" name="accion" value="Agregar" />
+                                            </td>
+                                        }
+                                    }
+                                }
+                            }
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+        </div>
+    }
+
+    /*
     if(rondas.Count > 0)
     {
         <p>Rondas registradas: </p><br />
@@ -30,4 +274,5 @@
     }
     <p>Si desea crear una ronda, haga click sobre el boton</p><br />
     <button>@Html.ActionLink("Crear Ronda", "Crear", "Ronda", new { idObservacion = observacion.Item1 }, null)</button>
+}*/
 }

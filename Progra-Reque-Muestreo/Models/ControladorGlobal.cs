@@ -30,7 +30,7 @@ namespace Progra_Reque_Muestreo.Models
         public static SqlConnection GetConn()
         {
             //Codigo de conexion con SQL
-            ConnectionStringSettings connSettings = ConfigurationManager.ConnectionStrings["SQLConn"];
+            ConnectionStringSettings connSettings = ConfigurationManager.ConnectionStrings["SQLConn2"];
             if (connSettings == null || String.IsNullOrEmpty(connSettings.ConnectionString))
                 throw new Exception("La conexión con la base de datos no se ha podido realizar, debido a que el string de conexión no es válido");
 

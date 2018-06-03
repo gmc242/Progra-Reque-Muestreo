@@ -20,6 +20,7 @@
     var status = ViewData["status"] as String;
     var colaboradores = ViewData["colaboradores"] as List<Tuple<int, String>>;
     var tareas = ViewData["tareas"] as List<Tuple<int, String>>;
+    var recorridos = ViewData["recorridos"] as List<Tuple<int, String>>;
 
     <h2>Control de Observaciones</h2><br />
     <p>En esta sección podrá crear, modificar y eliminar observaciones del proyecto @proyecto.Item2</p><hr />
@@ -97,12 +98,33 @@
     }
 
     if(observacionSel != -1){
+
+        //Status del proyecto
         <div class="input-group">
             <div class="input-group-append">
                 <span class="input-group-text">Status del muestreo</span>
             </div>
             <input class="form-control" type="text" value=@status readonly>
         </div> <br />
+
+        //Lista de recorridos
+        <div>
+            <h2 class="h2">Lista de Recorridos para este día</h2>
+            @using(Html.BeginForm("AccionRecorrido", "Observacion", 
+                new { idProy = proyecto.Item1, idOp = operacionSel, idObs = observacionSel }))
+            {
+                foreach(Tuple<int, String> recorrido in recorridos)
+                {
+                    <div class="list-group-flush">
+                        <button type="submit" class="list-group-item list-group-item-action" name="recorrido" value=@recorrido.Item1>
+                        @recorrido.Item2
+                        </button>
+                    </div>
+                }
+            }
+        </div>
+
+        //Tabla de observaciones
         <div>
             <h2 class="h2">Resumen de observaciones de Tarea para este día</h2><br />
             <table class="table">
