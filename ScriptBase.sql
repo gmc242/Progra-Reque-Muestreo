@@ -1,15 +1,3 @@
-	create proc getOperaciones
-	as
-	begin 
-	select nombre from actividad
-	end
-
-create proc getOperaciones
-	as
-	begin 
-	select nombre from actividad
-	end
-
 	CREATE TABLE ronda_de_observacion(
 	id_ronda integer identity(1,1),
 	id_observacion integer NOT NULL,
@@ -20,6 +8,12 @@ create proc getOperaciones
 	primary key(id_ronda),
 	foreign key(id_observacion) references observacion
 	);
+	
+	create proc getOperaciones
+	as
+	begin 
+	select nombre from actividad
+	end
 
 	create proc getTareasXoperacion 
 	@fecha date,
@@ -50,6 +44,146 @@ create proc getOperaciones
 	from observacion o
 	inner join actividad a
 	on o.id_actividad = @idOperacion
+	group by o.dia
+	end
+
+	create proc getObservacionesXdiaXoperacion
+	@nombreOperacion varchar(20)
+	as 
+	begin
+	declare @idOperacion int
+	select @idOperacion = id_actividad from actividad a where a.nombre = @nombreOperacion
+
+	select o.dia as 'Dia', count(t.id_tarea) as 'Numero de Observaciones'
+	from tarea t
+	inner join observacion o
+	on o.id_actividad = @idOperacion
+	inner join ronda_de_observacion r
+	on r.id_observacion = o.id_observacion
+	inner join observacion_de_tarea ot
+	on ot.id_ronda = r.id_ronda
+	where ot.id_tarea = t.id_tarea
+	group by o.dia
+	end
+
+	create proc getTareaXoperacion2
+	@fecha date,
+	@nombreOperacion varchar(20)
+	as 
+	begin
+	declare @idOperacion int
+	select @idOperacion = id_actividad from actividad a where a.nombre = @nombreOperacion	
+	select t.categoria as 'Categoria', t.nombre as 'Nombre', count(*) as CantObs
+	from tarea t, sujetos_de_prueba s
+	inner join observacion o
+	on o.id_actividad = @idOperacion and o.dia = @fecha
+	inner join ronda_de_observacion r
+	on r.id_observacion = o.id_observacion
+	inner join observacion_de_tarea ot
+	on ot.id_ronda = r.id_ronda
+	where ot.id_tarea = t.id_tarea
+	and ot.id_sujeto = s.id_sujeto
+	Group by t.categoria,t.nombre
+	having COUNT(*)>0
+	end
+
+	create proc getTareaXoperacion3
+	@nombreOperacion varchar(20)
+	as 
+	begin
+	declare @idOperacion int
+	select @idOperacion = id_actividad from actividad a where a.nombre = @nombreOperacion	
+	select t.categoria as 'Categoria', t.nombre as 'Nombre', count(*) as CantObs
+	from tarea t, sujetos_de_prueba s
+	inner join observacion o
+	on o.id_actividad = @idOperacion
+	inner join ronda_de_observacion r
+	on r.id_observacion = o.id_observacion
+	inner join observacion_de_tarea ot
+	on ot.id_ronda = r.id_ronda
+	where ot.id_tarea = t.id_tarea
+	and ot.id_sujeto = s.id_sujeto
+	Group by t.categoria,t.nombre
+	having COUNT(*)>0
+	end
+
+	create proc getTareaXoperacionTP
+	@nombreOperacion varchar(20)
+	as 
+	begin
+	declare @idOperacion int
+	select @idOperacion = id_actividad from actividad a where a.nombre = @nombreOperacion	
+	select t.categoria as 'Categoria', t.nombre as 'Nombre', count(*) as CantObs
+	from tarea t
+	inner join observacion o
+	on o.id_actividad = @idOperacion
+	inner join ronda_de_observacion r
+	on r.id_observacion = o.id_observacion
+	inner join observacion_de_tarea ot
+	on ot.id_ronda = r.id_ronda
+	where ot.id_tarea = t.id_tarea
+	and t.categoria = 'TP'
+	Group by t.categoria,t.nombre
+	having COUNT(*)>0
+	end
+
+	create proc getTareaXoperacionTI
+	@nombreOperacion varchar(20)
+	as 
+	begin
+	declare @idOperacion int
+	select @idOperacion = id_actividad from actividad a where a.nombre = @nombreOperacion	
+	select t.categoria as 'Categoria', t.nombre as 'Nombre', count(*) as CantObs
+	from tarea t
+	inner join observacion o
+	on o.id_actividad = @idOperacion
+	inner join ronda_de_observacion r
+	on r.id_observacion = o.id_observacion
+	inner join observacion_de_tarea ot
+	on ot.id_ronda = r.id_ronda
+	where ot.id_tarea = t.id_tarea
+	and t.categoria = 'TI'
+	Group by t.categoria,t.nombre
+	having COUNT(*)>0
+	end
+
+	create proc getTareaXoperacionTC
+	@nombreOperacion varchar(20)
+	as 
+	begin
+	declare @idOperacion int
+	select @idOperacion = id_actividad from actividad a where a.nombre = @nombreOperacion	
+	select t.categoria as 'Categoria', t.nombre as 'Nombre', count(*) as CantObs
+	from tarea t
+	inner join observacion o
+	on o.id_actividad = @idOperacion
+	inner join ronda_de_observacion r
+	on r.id_observacion = o.id_observacion
+	inner join observacion_de_tarea ot
+	on ot.id_ronda = r.id_ronda
+	where ot.id_tarea = t.id_tarea
+	and t.categoria = 'TC'
+	Group by t.categoria,t.nombre
+	having COUNT(*)>0
+	end
+
+	create proc productivasXoperacion
+	@fecha date,
+	@nombreOperacion varchar(20)
+	as
+	begin
+	declare @idOperacion int
+	select @idOperacion = id_actividad from actividad a where a.nombre = @nombreOperacion
+	select o.dia as 'Dia',count(t.id_tarea) as 'Productivas'
+	from tarea t
+	inner join observacion o
+	on o.id_actividad = @idOperacion
+	inner join ronda_de_observacion r
+	on r.id_observacion = o.id_observacion
+	inner join observacion_de_tarea ot
+	on ot.id_ronda = r.id_ronda
+	where ot.id_tarea = t.id_tarea
+	and t.categoria = 'TP'
 	group by o.dia
 	end
 
