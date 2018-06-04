@@ -16,7 +16,7 @@
     var tareasColaborativas = ViewData["TareasColaborativas"] as List<Tuple<string, string, string>>; ;
     var totalColaborativas = ViewData["totalColaborativas"];
     //----------Variables Tareas Improductivas-----------
-    var tareasImproductivas = ViewData["TareasImproductivas"] as List<Tuple<string, string, string>>; ;
+    var tareasImproductivas = ViewData["TareasImproductivas"] as List<Tuple<string, string, string>>; 
     var totalImproductivas = ViewData["totalImproductivas"];
 
 
@@ -50,7 +50,8 @@
             </tr>
         }
     </table>
-    <h3>Gráfico asociado</h3>
+    <img src="@Url.Action("GraficoDatosResumen")" alt="SimpleChart" />
+
 </div>
 <div class="jumbotron">
     <h2>Tareas</h2>
@@ -110,7 +111,7 @@
                 </tr>
         }
     </table>
-    <h3>Gráfico asociado</h3>
+    <img src="@Url.Action("GraficoResumenTareas")" alt="SimpleChart" />
 </div>
 <div class="jumbotron">
     <h2>Tareas Productivas</h2>
@@ -143,6 +144,7 @@
             </tr>
         }
     </table>
+    <img src="@Url.Action("GraficoProductivas")" alt="SimpleChart" />
 </div>
 <div class="jumbotron">
     <h2>Tareas Colaborativas</h2>
@@ -175,6 +177,7 @@
             </tr>
         }
     </table>
+    <img src="@Url.Action("GraficoColaborativas")" alt="SimpleChart" />
 </div>
 <div class="jumbotron">
     <h2>Tareas Improductivas</h2>
@@ -207,5 +210,6 @@
             </tr>
         }
     </table>
+    <img src="@Url.Action("GraficoImproductivas")" alt="SimpleChart" />
 </div>
 }

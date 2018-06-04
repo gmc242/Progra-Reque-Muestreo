@@ -18,6 +18,14 @@ namespace Progra_Reque_Muestreo.Views.Consolidado
     public class ConsolidadoController : Controller
     {
         static string op;
+        static List<Tuple<string, string, string, string, string>> resumen;
+        static List<Tuple<string, string, string, string>> tresum;
+        static List<Tuple<string, string, string>> tproductivas;
+        static float np;
+        static List<Tuple<string, string, string>> tcolaborativas;
+        static float nc;
+        static List<Tuple<string, string, string>> timproductivas;
+        static float ni;
         private void getOperations()
         {
             using (var conn = ControladorGlobal.GetConn())
@@ -357,6 +365,7 @@ namespace Progra_Reque_Muestreo.Views.Consolidado
 
             ViewData["TablaResumen"] = result;
             ViewData["nResumen"] = n;
+            resumen = result;
         }
 
         private void tareasGeneral(string operacion)
@@ -420,7 +429,7 @@ namespace Progra_Reque_Muestreo.Views.Consolidado
                     ViewData["TareasGeneral"] = tareasGeneral;
                     ViewData["TareasResumen"] = tareasResumen;
                     ViewData["totalGeneral"] = total;
-
+                    tresum = tareasResumen;
                 }
                 else
                 {
@@ -461,6 +470,8 @@ namespace Progra_Reque_Muestreo.Views.Consolidado
                     }
                     ViewData["TareasProductivas"] = tareasProductivas;
                     ViewData["totalProductivas"] = total;
+                    tproductivas = tareasProductivas;
+                    np = total;
 
                 }
                 else
@@ -502,6 +513,8 @@ namespace Progra_Reque_Muestreo.Views.Consolidado
                     }
                     ViewData["TareasColaborativas"] = tareasColaborativas;
                     ViewData["totalColaborativas"] = total;
+                    tcolaborativas = tareasColaborativas;
+                    nc = total;
 
                 }
                 else
@@ -543,6 +556,8 @@ namespace Progra_Reque_Muestreo.Views.Consolidado
                     }
                     ViewData["TareasImproductivas"] = tareasImproductivas;
                     ViewData["totalImproductivas"] = total;
+                    timproductivas  = tareasImproductivas;
+                    ni = total;
 
                 }
                 else
@@ -552,6 +567,145 @@ namespace Progra_Reque_Muestreo.Views.Consolidado
             }
         }
 
+
+        public ActionResult GraficoDatosResumen()
+        {
+            string tema = @"<Chart BackColor=""Transparent"">
+                                <ChartAreas>
+                                    <ChartArea Name=""Default"" BackColor=""Transparent""></ChartArea>
+                                </ChartAreas>
+                            </Chart>";
+            var x = new List<string>();
+            var y = new List<float>();
+
+            foreach (Tuple<string, string, string, string, string> tupla in resumen)
+            {
+                x.Add(tupla.Item2);
+                y.Add(float.Parse(tupla.Item3));
+            }
+
+            new Chart(width: 350, height: 350, theme: tema)
+            .AddTitle("Productividad")
+            .AddSeries(
+                    chartType: "line",
+                    name:"Dias de Muestreo",
+                    xValue:x,
+                    yValues:y)
+            .Write("png");
+
+            return null;
+        }
+        public ActionResult GraficoResumenTareas()
+        {
+            string tema = @"<Chart BackColor=""Transparent"">
+                                <ChartAreas>
+                                    <ChartArea Name=""Default"" BackColor=""Transparent""></ChartArea>
+                                </ChartAreas>
+                            </Chart>";
+            var x = new List<string>();
+            var y = new List<float>();
+
+            foreach (Tuple<string, string, string, string> tupla in tresum)
+            {
+                x.Add(tupla.Item2+"\n"+tupla.Item4+"%");
+                y.Add(float.Parse(tupla.Item3));
+            }
+
+            new Chart(width: 350, height: 350, theme: tema)
+            .AddTitle("Porcentaje de cada tipo de tarea")
+            .AddSeries(
+                    chartType: "pie",
+                    xValue: x,
+                    yValues: y)
+            .Write("png");
+
+            return null;
+        }
+
+        public ActionResult GraficoProductivas()
+        {
+            string tema = @"<Chart BackColor=""Transparent"">
+                                <ChartAreas>
+                                    <ChartArea Name=""Default"" BackColor=""Transparent""></ChartArea>
+                                </ChartAreas>
+                            </Chart>";
+            var x = new List<string>();
+            var y = new List<float>();
+
+            foreach (Tuple<string, string, string> tupla in tproductivas)
+            {
+                float temp = Int32.Parse(tupla.Item3);
+                float porc = (temp / np) * 100;
+                x.Add(tupla.Item2 + "\n" + porc.ToString() + "%");
+                y.Add(float.Parse(tupla.Item3));
+            }
+
+            new Chart(width: 350, height: 350, theme: tema)
+            .AddTitle("Porcentaje de cada tipo de tarea")
+            .AddSeries(
+                    chartType: "pie",
+                    xValue: x,
+                    yValues: y)
+            .Write("png");
+
+            return null;
+        }
+        public ActionResult GraficoColaborativas()
+        {
+            string tema = @"<Chart BackColor=""Transparent"">
+                                <ChartAreas>
+                                    <ChartArea Name=""Default"" BackColor=""Transparent""></ChartArea>
+                                </ChartAreas>
+                            </Chart>";
+            var x = new List<string>();
+            var y = new List<float>();
+
+            foreach (Tuple<string, string, string> tupla in tcolaborativas)
+            {
+                float temp = Int32.Parse(tupla.Item3);
+                float porc = (temp / nc) * 100;
+                x.Add(tupla.Item2 + "\n" + porc.ToString() + "%");
+                y.Add(float.Parse(tupla.Item3));
+            }
+
+            new Chart(width: 350, height: 350, theme: tema)
+            .AddTitle("Porcentaje de cada tipo de tarea")
+            .AddSeries(
+                    chartType: "pie",
+                    xValue: x,
+                    yValues: y)
+            .Write("png");
+
+            return null;
+        }
+        public ActionResult GraficoImproductivas()
+        {
+            string tema = @"<Chart BackColor=""Transparent"">
+                                <ChartAreas>
+                                    <ChartArea Name=""Default"" BackColor=""Transparent""></ChartArea>
+                                </ChartAreas>
+                            </Chart>";
+            var x = new List<string>();
+            var y = new List<float>();
+
+            foreach (Tuple<string, string, string> tupla in timproductivas)
+            {
+                float temp = Int32.Parse(tupla.Item3);
+                float porc = (temp / ni) * 100;
+                x.Add(tupla.Item2 + "\n" + porc.ToString() + "%");
+                y.Add(float.Parse(tupla.Item3));
+            }
+
+            new Chart(width: 350, height: 350, theme: tema)
+            .AddTitle("Porcentaje de cada tipo de tarea")
+            .AddSeries(
+                    chartType: "pie",
+                    xValue: x,
+                    yValues: y)
+            .Write("png");
+
+            return null;
+        }
         public ActionResult Consolidado(FormCollection collection)
         {
             string operacion = collection["operacion"].ToString();
