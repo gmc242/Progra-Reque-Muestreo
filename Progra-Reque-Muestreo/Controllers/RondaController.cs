@@ -131,6 +131,7 @@ namespace Progra_Reque_Muestreo.Controllers
                 }
 
                 FormCollection form = new FormCollection();
+                form.Add("accion", "Cargar");
                 form.Add("ronda", idRonda.ToString());
 
                 return AccionRecorrido(idProy, idOp, idObs, form);
